@@ -13,4 +13,39 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="LoginTheme" parent="FirebaseUI">
+
+        <!-- Background color of the login dialog -->
+        <item name="android:windowBackground">@color/white</item>
+
+        <item name="colorControlNormal">@color/purple_500</item>
+
+        <item name="android:textColorHint">@color/purple_500</item>
+
+        <!-- Underline and Hint of the edittext -->
+        <item name="colorControlActivated">@color/purple_700</item>
+
+        <!-- Top bar color of the login dialog -->
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimaryDark">@color/purple_700</item>
+
+        <!-- Typed in text color into the edittext -->
+        <item name="android:textColorPrimary">@color/purple_700</item>
+
+        <item name="android:textColor">@color/purple_700</item>
+
+        <item name="android:textColorLink">@color/purple_700</item>
+
+        <!-- Remove the action bar from the login dialog -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+    </style>
+
+    <!-- Custom styling of the Trouble signing in link -->
+    <style name="FirebaseUI.Text.Link">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/teal_700</item>
+    </style>
 </resources>
