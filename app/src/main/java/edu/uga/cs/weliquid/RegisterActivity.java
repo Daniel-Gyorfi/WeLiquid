@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 
 public class RegisterActivity extends AppCompatActivity {
@@ -65,6 +66,8 @@ public class RegisterActivity extends AppCompatActivity {
                                 Log.d( DEBUG_TAG, "createUserWithEmail: success" );
 
                                 FirebaseUser user = firebaseAuth.getCurrentUser();
+                                //UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName("").build();
+                                //user.updateProfile(profileUpdates);
 
                                 Intent intent = new Intent( RegisterActivity.this, ItemManagementActivity.class );
                                 startActivity( intent );
