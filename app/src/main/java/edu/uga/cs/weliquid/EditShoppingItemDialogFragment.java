@@ -98,6 +98,7 @@ public class EditShoppingItemDialogFragment extends DialogFragment {
     private class SaveButtonClickListener implements DialogInterface.OnClickListener {
         @Override
         public void onClick(DialogInterface dialog, int which) {
+            // TODO user name and date are updated when Save button is clicked on Edit Item fragment
             String itemName = itemNameView.getText().toString();
             String userName = getArguments().getString( "rmName" );
             String date = getArguments().getString( "itemTime" );
