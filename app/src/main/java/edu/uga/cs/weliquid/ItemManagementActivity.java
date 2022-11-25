@@ -13,6 +13,10 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+/**
+ * This is the screen users are taken to when they log in
+ * Users can open the shopping list and purchased list screens from here
+ */
 public class ItemManagementActivity extends AppCompatActivity {
 
     private static final String DEBUG_TAG = "ManagementActivity";
