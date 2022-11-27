@@ -15,17 +15,24 @@
         android:theme="@style/Theme.WeLiquid"
         tools:targetApi="31">
         <activity
-            android:name=".PurchasedListActivity"
-            android:parentActivityName=".ItemManagementActivity"
+            android:name=".BasketActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
+            android:name=".PurchasedListActivity"
+            android:exported="false"
+            android:parentActivityName=".ItemManagementActivity">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".ShoppingListActivity"
-            android:parentActivityName=".ItemManagementActivity"
-            android:exported="false">
+            android:exported="false"
+            android:parentActivityName=".ItemManagementActivity">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -39,8 +46,8 @@
         </activity>
         <activity
             android:name=".RegisterActivity"
-            android:parentActivityName=".MainActivity"
-            android:exported="false">
+            android:exported="false"
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
