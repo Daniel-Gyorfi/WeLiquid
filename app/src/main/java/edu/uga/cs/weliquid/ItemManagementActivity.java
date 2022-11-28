@@ -32,10 +32,12 @@ public class ItemManagementActivity extends AppCompatActivity {
 
         Button shoppingListBtn = findViewById(R.id.button1);
         Button purchasedListBtn = findViewById(R.id.button2);
+        Button basketBtn = findViewById(R.id.basket_btn);
         signedInTextView = findViewById(R.id.textView3);
 
         shoppingListBtn.setOnClickListener( new ShoppingListBtnClickListener() );
         purchasedListBtn.setOnClickListener( new PurchasedListBtnClickListener() );
+        basketBtn.setOnClickListener( new BasketBtnClickListener() );
 
         // Setup a listener for a change in the sign in status (authentication status change)
         // when it is invoked, check if a user is signed in and update the UI text view string,
@@ -70,6 +72,14 @@ public class ItemManagementActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(view.getContext(), PurchasedListActivity.class);
+            view.getContext().startActivity(intent);
+        }
+    }
+
+    private class BasketBtnClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(view.getContext(), BasketActivity.class);
             view.getContext().startActivity(intent);
         }
     }
