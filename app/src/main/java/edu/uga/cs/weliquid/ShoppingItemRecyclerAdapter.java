@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,7 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
 
     private List<ShoppingItem> shoppingList;
     private Context context;
+    int numChecks = 0;
 
     public ShoppingItemRecyclerAdapter( List<ShoppingItem> shoppingList, Context context ) {
         this.shoppingList = shoppingList;
@@ -33,6 +35,7 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
         TextView itemName;
         TextView rmName;
         TextView itemTime;
+        CheckBox box;
 
         public ShoppingItemHolder(View itemView ) {
             super(itemView);
@@ -40,6 +43,7 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
             itemName = itemView.findViewById( R.id.itemName );
             rmName = itemView.findViewById( R.id.roommateName );
             itemTime = itemView.findViewById( R.id.userTime );
+            box = itemView.findViewById( R.id.checkBox );
         }
     }
 
@@ -80,6 +84,19 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
                 EditShoppingItemDialogFragment editItemFragment =
                         EditShoppingItemDialogFragment.newInstance( holder.getAdapterPosition(), key, itemName, userName, userTime );
                 editItemFragment.show( ((AppCompatActivity)context).getSupportFragmentManager(), null);
+            }
+        });
+
+        holder.box.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (holder.box.isChecked()) {
+                    numChecks++;
+                    Log.d(DEBUG_TAG, "num of selected checkbox: " + numChecks);
+                } else {
+                    numChecks--;
+                    Log.d(DEBUG_TAG, "num of selected checkbox: " + numChecks);
+                }
             }
         });
     }
