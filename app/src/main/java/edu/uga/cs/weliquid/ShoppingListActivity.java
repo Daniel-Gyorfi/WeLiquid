@@ -1,6 +1,7 @@
 package edu.uga.cs.weliquid;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -8,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -46,6 +49,9 @@ EditShoppingItemDialogFragment.EditItemDialogListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_list);
         setTitle("Shopping List");
+
+        final ActionBar ab = getSupportActionBar();
+        assert ab != null;
 
         recyclerView = findViewById( R.id.recyclerView );
 
@@ -102,6 +108,24 @@ EditShoppingItemDialogFragment.EditItemDialogListener {
                 System.out.println( "ValueEventListener: reading failed: " + databaseError.getMessage() );
             }
         } );
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.shopping_list_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.logout) {
+            DialogFragment logoutFrag = new LogoutDialogFragment();
+            logoutFrag.show( getSupportFragmentManager(), null);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     // this is our own callback for a AddShoppingItemDialogFragment which adds a new shopping list item.
