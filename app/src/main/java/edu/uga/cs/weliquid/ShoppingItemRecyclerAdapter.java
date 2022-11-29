@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.List;
 
 /**
@@ -97,6 +99,11 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
                     numChecks--;
                     Log.d(DEBUG_TAG, "num of selected checkbox: " + numChecks);
                 }
+                if (numChecks > 0) {
+                    ShoppingListActivity.setBasketButton();
+                } else {
+                    ShoppingListActivity.setAddButton();
+                }
             }
         });
     }
@@ -105,4 +112,6 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
     public int getItemCount() {
         return shoppingList.size();
     }
+
+    public int getNumChecks() { return numChecks; }
 }

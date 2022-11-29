@@ -7,6 +7,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -40,6 +41,8 @@ EditShoppingItemDialogFragment.EditItemDialogListener {
     private ShoppingItemRecyclerAdapter recyclerAdapter;
     private List<ShoppingItem> shoppingItemsList;
     private FirebaseDatabase database;
+    public static FloatingActionButton floatingButton;
+    public static boolean isAddButton = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,14 +58,20 @@ EditShoppingItemDialogFragment.EditItemDialogListener {
 
         recyclerView = findViewById( R.id.recyclerView );
 
-        FloatingActionButton floatingButton = findViewById(R.id.floatingActionButton);
+        floatingButton = findViewById(R.id.floatingActionButton);
+
         floatingButton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogFragment newFragment = new AddShoppingItemDialogFragment();
-                newFragment.show( getSupportFragmentManager(), null);
+                if (isAddButton == true) {
+                    DialogFragment newFragment = new AddShoppingItemDialogFragment();
+                    newFragment.show( getSupportFragmentManager(), null);
+                } else {
+                    Log.d(DEBUG_TAG, "go to basket activity");
+                }
             }
         });
+
 
         // initialize the shopping list
         shoppingItemsList = new ArrayList<ShoppingItem>();
@@ -251,5 +260,19 @@ EditShoppingItemDialogFragment.EditItemDialogListener {
                 }
             });
         }
+    }
+
+    // changes the icon and function of the circle button to adding an item in the shopping list.
+    // It is a static method so that it is accessible to other classes.
+    public static void setAddButton() {
+        floatingButton.setImageResource(R.drawable.ic_baseline_add_24);
+        isAddButton = true;
+    }
+
+    // changes the icon and function of the circle button to moving the items in the basket.
+    // It is a static method so that it is accessible to other classes.
+    public static void setBasketButton() {
+        floatingButton.setImageResource(R.drawable.ic_baseline_shopping_basket_24);
+        isAddButton = false;
     }
 }
