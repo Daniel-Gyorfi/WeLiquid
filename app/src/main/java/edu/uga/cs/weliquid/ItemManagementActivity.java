@@ -1,11 +1,15 @@
 package edu.uga.cs.weliquid;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -27,6 +31,9 @@ public class ItemManagementActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_management);
+
+        final ActionBar ab = getSupportActionBar();
+        assert ab != null;
 
         Log.d( DEBUG_TAG, "ItemManagementActivity.onCreate()" );
 
@@ -58,6 +65,24 @@ public class ItemManagementActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.item_management_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.logout) {
+            DialogFragment logoutFrag = new LogoutDialogFragment();
+            logoutFrag.show( getSupportFragmentManager(), null);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private class ShoppingListBtnClickListener implements View.OnClickListener {
