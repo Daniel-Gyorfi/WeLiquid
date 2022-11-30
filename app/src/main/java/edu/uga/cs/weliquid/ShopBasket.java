@@ -17,6 +17,10 @@ public class ShopBasket {
             return instance;
         }
 
+        public void add(ShoppingItem item) {
+            items.add( item );
+        }
+
         public Boolean empty() {
             return items.isEmpty();
         }

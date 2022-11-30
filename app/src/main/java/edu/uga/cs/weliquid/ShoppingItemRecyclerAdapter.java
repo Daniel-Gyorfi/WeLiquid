@@ -1,5 +1,6 @@
 package edu.uga.cs.weliquid;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,18 +23,23 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
     public static final String DEBUG_TAG = "ShopItemRecyclerAdapter";
 
     private List<ShoppingItem> shoppingList;
+    private List<Integer> basketList;
+
     private Context context;
     int numChecks = 0;
     boolean selectAll = false;
+    boolean addBasket = false;
 
     public ShoppingItemRecyclerAdapter( List<ShoppingItem> shoppingList, Context context ) {
         this.shoppingList = shoppingList;
+        this.basketList = new ArrayList<Integer>();
         this.context = context;
     }
 
     // The adapter must have a ViewHolder class to "hold" one item to show.
     public class ShoppingItemHolder extends RecyclerView.ViewHolder {
 
+        int position = -1;
         TextView itemName;
         TextView rmName;
         TextView itemTime;
@@ -57,23 +64,32 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
 
     // This method fills in the values of the Views to show a ShoppingItem
     @Override
-    public void onBindViewHolder( ShoppingItemHolder holder, int position ) {
+    public void onBindViewHolder(ShoppingItemHolder holder, @SuppressLint("RecyclerView") int position ) {
         ShoppingItem shoppingItem = shoppingList.get( position );
 
-        Log.d( DEBUG_TAG, "onBindViewHolder: " + shoppingItem );
+        Log.d( DEBUG_TAG, "Bind: " + position );
 
         String key = shoppingItem.getKey();
         String itemName = shoppingItem.getItemName();
         String userName = shoppingItem.getRmName();
         String userTime = shoppingItem.getItemTime();
 
-        holder.itemName.setText( shoppingItem.getItemName());
+        holder.position = position;
+        holder.itemName.setText( shoppingItem.getItemName() );
         holder.rmName.setText( shoppingItem.getRmName() );
         holder.itemTime.setText( shoppingItem.getItemTime() );
         if (!selectAll) {
             holder.box.setChecked(false);
+            basketList.remove(Integer.valueOf(holder.position));
         } else {
             holder.box.setChecked(true);
+        }
+
+        if (addBasket && basketList.contains(position)) {
+            Log.d(DEBUG_TAG, "contains: " + position);
+            ShopBasket.getInstance().add( shoppingItem );
+            basketList.remove(Integer.valueOf(holder.position));
+            if (basketList.isEmpty()) addBasket = false;
         }
 
         // We can attach an OnClickListener to the itemView of the holder;
@@ -97,10 +113,12 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
             @Override
             public void onClick(View v) {
                 if (holder.box.isChecked()) {
+                    basketList.add(holder.position);
                     numChecks++;
                     Log.d(DEBUG_TAG, "num of selected checkbox: " + numChecks);
                 } else {
                     numChecks--;
+                    basketList.remove(Integer.valueOf(holder.position));
                     Log.d(DEBUG_TAG, "num of selected checkbox: " + numChecks);
                 }
                 if (numChecks > 0) {
@@ -128,6 +146,13 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
     }
 
     public void unselectAll() {
+        selectAll = false;
+        numChecks = 0;
+        notifyDataSetChanged();
+    }
+
+    public void addToBasket() {
+        addBasket = true;
         selectAll = false;
         numChecks = 0;
         notifyDataSetChanged();
