@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private class SignInButtonClickListener implements View.OnClickListener {
         @Override
         public void onClick( View v ) {
+            // TODO make sure to error check email input
             // This is an example of how to use the AuthUI activity for signing in to Firebase.
             // Here, we are just using email/password sign in.
             List<AuthUI.IdpConfig> providers = Arrays.asList(
@@ -77,9 +78,9 @@ public class MainActivity extends AppCompatActivity {
                     }
             );
 
-    // This method is called once the Firebase sign-in activity (lqunched above) returns (completes).
+    // This method is called once the Firebase sign-in activity (launched above) returns (completes).
     // Then, the current (logged-in) Firebase user can be obtained.
-    // Subsequently, there is a transition to the JobLeadManagementActivity.
+    // Subsequently, there is a transition to the ItemManagementActivity.
     private void onSignInResult( FirebaseAuthUIAuthenticationResult result ) {
         IdpResponse response = result.getIdpResponse();
         if (result.getResultCode() == RESULT_OK) {
