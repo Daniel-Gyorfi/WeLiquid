@@ -43,6 +43,7 @@ EditShoppingItemDialogFragment.EditItemDialogListener {
     private FirebaseDatabase database;
     public static FloatingActionButton floatingButton;
     public static boolean isAddButton = true;
+    private static Menu optionsMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +124,7 @@ EditShoppingItemDialogFragment.EditItemDialogListener {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.shopping_list_menu, menu);
+        this.optionsMenu = menu;
         return true;
     }
 
@@ -136,10 +138,10 @@ EditShoppingItemDialogFragment.EditItemDialogListener {
         } else if (id == R.id.select) {
             if (item.getTitle().equals("SELECT ALL")) {
                 recyclerAdapter.selectAll();
-                item.setTitle("UNSELECT ALL");
+                setUnselectTitle();
             } else if (item.getTitle().equals("UNSELECT ALL")) {
-                item.setTitle("SELECT ALL");
                 recyclerAdapter.unselectAll();
+                setSelectTitle();
             }
         }
         return super.onOptionsItemSelected(item);
@@ -282,5 +284,15 @@ EditShoppingItemDialogFragment.EditItemDialogListener {
     public static void setBasketButton() {
         floatingButton.setImageResource(R.drawable.ic_baseline_shopping_basket_24);
         isAddButton = false;
+    }
+
+    public static void setUnselectTitle() {
+        MenuItem item = optionsMenu.findItem(R.id.select);
+        item.setTitle("UNSELECT ALL");
+    }
+
+    public static void setSelectTitle() {
+        MenuItem item = optionsMenu.findItem(R.id.select);
+        item.setTitle("SELECT ALL");
     }
 }

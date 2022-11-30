@@ -107,8 +107,10 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
                 }
                 if (numChecks > 0) {
                     ShoppingListActivity.setBasketButton();
+                    ShoppingListActivity.setUnselectTitle();
                 } else {
                     ShoppingListActivity.setAddButton();
+                    ShoppingListActivity.setSelectTitle();
                 }
             }
         });
