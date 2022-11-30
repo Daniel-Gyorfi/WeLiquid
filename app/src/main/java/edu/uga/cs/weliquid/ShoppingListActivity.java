@@ -133,6 +133,14 @@ EditShoppingItemDialogFragment.EditItemDialogListener {
         if (id == R.id.logout) {
             DialogFragment logoutFrag = new LogoutDialogFragment();
             logoutFrag.show( getSupportFragmentManager(), null);
+        } else if (id == R.id.select) {
+            if (item.getTitle().equals("SELECT ALL")) {
+                recyclerAdapter.selectAll();
+                item.setTitle("UNSELECT ALL");
+            } else if (item.getTitle().equals("UNSELECT ALL")) {
+                item.setTitle("SELECT ALL");
+                recyclerAdapter.unselectAll();
+            }
         }
         return super.onOptionsItemSelected(item);
     }

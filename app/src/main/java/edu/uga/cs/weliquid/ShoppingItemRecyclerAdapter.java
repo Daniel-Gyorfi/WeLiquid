@@ -25,6 +25,7 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
     private List<ShoppingItem> shoppingList;
     private Context context;
     int numChecks = 0;
+    boolean isSelectedAll = false;
 
     public ShoppingItemRecyclerAdapter( List<ShoppingItem> shoppingList, Context context ) {
         this.shoppingList = shoppingList;
@@ -71,6 +72,11 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
         holder.itemName.setText( shoppingItem.getItemName());
         holder.rmName.setText( shoppingItem.getRmName() );
         holder.itemTime.setText( shoppingItem.getItemTime() );
+        if (!isSelectedAll) {
+            holder.box.setChecked(false);
+        } else {
+            holder.box.setChecked(true);
+        }
 
         // We can attach an OnClickListener to the itemView of the holder;
         // itemView is a public field in the Holder class.
@@ -114,4 +120,14 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
     }
 
     public int getNumChecks() { return numChecks; }
+
+    public void selectAll() {
+        isSelectedAll = true;
+        notifyDataSetChanged();
+    }
+
+    public void unselectAll() {
+        isSelectedAll = false;
+        notifyDataSetChanged();
+    }
 }
