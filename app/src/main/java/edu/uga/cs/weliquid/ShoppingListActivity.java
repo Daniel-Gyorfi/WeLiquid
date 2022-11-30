@@ -32,8 +32,7 @@ import java.util.List;
  * The current items are listed as a RecyclerView.
  */
 public class ShoppingListActivity
-        extends AppCompatActivity implements AddShoppingItemDialogFragment.AddShoppingItemDialogListener,
-EditShoppingItemDialogFragment.EditItemDialogListener {
+        extends AppCompatActivity  {
 
     public static final String DEBUG_TAG = "ShoppingListActivity";
 
@@ -69,6 +68,7 @@ EditShoppingItemDialogFragment.EditItemDialogListener {
                     newFragment.show( getSupportFragmentManager(), null);
                 } else {
                     Log.d(DEBUG_TAG, "go to basket activity");
+
                 }
             }
         });

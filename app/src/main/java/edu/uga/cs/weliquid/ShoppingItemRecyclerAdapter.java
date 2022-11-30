@@ -12,8 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.util.List;
 
 /**
@@ -25,7 +23,7 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
     private List<ShoppingItem> shoppingList;
     private Context context;
     int numChecks = 0;
-    boolean isSelectedAll = false;
+    boolean selectAll = false;
 
     public ShoppingItemRecyclerAdapter( List<ShoppingItem> shoppingList, Context context ) {
         this.shoppingList = shoppingList;
@@ -33,7 +31,7 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
     }
 
     // The adapter must have a ViewHolder class to "hold" one item to show.
-    class ShoppingItemHolder extends RecyclerView.ViewHolder {
+    public class ShoppingItemHolder extends RecyclerView.ViewHolder {
 
         TextView itemName;
         TextView rmName;
@@ -72,7 +70,7 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
         holder.itemName.setText( shoppingItem.getItemName());
         holder.rmName.setText( shoppingItem.getRmName() );
         holder.itemTime.setText( shoppingItem.getItemTime() );
-        if (!isSelectedAll) {
+        if (!selectAll) {
             holder.box.setChecked(false);
         } else {
             holder.box.setChecked(true);
@@ -124,13 +122,13 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
     public int getNumChecks() { return numChecks; }
 
     public void selectAll() {
-        isSelectedAll = true;
+        selectAll = true;
         numChecks = getItemCount();
         notifyDataSetChanged();
     }
 
     public void unselectAll() {
-        isSelectedAll = false;
+        selectAll = false;
         numChecks = 0;
         notifyDataSetChanged();
     }
