@@ -139,7 +139,7 @@ EditShoppingItemDialogFragment.EditItemDialogListener {
             if (item.getTitle().equals("SELECT ALL")) {
                 recyclerAdapter.selectAll();
                 setUnselectTitle();
-            } else if (item.getTitle().equals("UNSELECT ALL")) {
+            } else if (item.getTitle().equals("UNSELECT")) {
                 recyclerAdapter.unselectAll();
                 setSelectTitle();
             }
@@ -288,7 +288,7 @@ EditShoppingItemDialogFragment.EditItemDialogListener {
 
     public static void setUnselectTitle() {
         MenuItem item = optionsMenu.findItem(R.id.select);
-        item.setTitle("UNSELECT ALL");
+        item.setTitle("UNSELECT");
     }
 
     public static void setSelectTitle() {

@@ -125,11 +125,13 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
 
     public void selectAll() {
         isSelectedAll = true;
+        numChecks = getItemCount();
         notifyDataSetChanged();
     }
 
     public void unselectAll() {
         isSelectedAll = false;
+        numChecks = 0;
         notifyDataSetChanged();
     }
 }
