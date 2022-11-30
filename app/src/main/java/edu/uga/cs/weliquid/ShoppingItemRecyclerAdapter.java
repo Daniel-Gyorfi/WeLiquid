@@ -80,7 +80,7 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
         holder.itemTime.setText( shoppingItem.getItemTime() );
         if (!selectAll) {
             holder.box.setChecked(false);
-            basketList.remove(Integer.valueOf(holder.position));
+//            basketList.remove(Integer.valueOf(holder.position));
         } else {
             holder.box.setChecked(true);
         }
@@ -142,12 +142,14 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
     public void selectAll() {
         selectAll = true;
         numChecks = getItemCount();
+        ShoppingListActivity.setBasketButton();
         notifyDataSetChanged();
     }
 
     public void unselectAll() {
         selectAll = false;
         numChecks = 0;
+        ShoppingListActivity.setAddButton();
         notifyDataSetChanged();
     }
 
