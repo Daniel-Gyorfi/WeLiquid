@@ -60,20 +60,6 @@ public class ShoppingListActivity
 
         floatingButton = findViewById(R.id.floatingActionButton);
 
-        floatingButton.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isAddButton == true) {
-                    DialogFragment newFragment = new AddShoppingItemDialogFragment();
-                    newFragment.show( getSupportFragmentManager(), null);
-                } else {
-                    Log.d(DEBUG_TAG, "go to basket activity");
-
-                }
-            }
-        });
-
-
         // initialize the shopping list
         shoppingItemsList = new ArrayList<ShoppingItem>();
 
@@ -84,6 +70,19 @@ public class ShoppingListActivity
         // the recycler adapter with shopping list items is empty at first; it will be updated later
         recyclerAdapter = new ShoppingItemRecyclerAdapter( shoppingItemsList, ShoppingListActivity.this );
         recyclerView.setAdapter( recyclerAdapter );
+
+        floatingButton.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isAddButton == true) {
+                    DialogFragment newFragment = new AddShoppingItemDialogFragment();
+                    newFragment.show( getSupportFragmentManager(), null);
+                } else {
+                    Log.d(DEBUG_TAG, "go to basket activity");
+                    recyclerAdapter.addToBasket();
+                }
+            }
+        });
 
         // get a Firebase DB instance reference
         database = FirebaseDatabase.getInstance();
