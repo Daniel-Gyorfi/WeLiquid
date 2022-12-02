@@ -38,7 +38,7 @@ public class BasketActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basket);
-        setTitle("Shopping Basket");
+        setTitle("Basket");
 
         final ActionBar ab = getSupportActionBar();
         assert ab != null;
@@ -58,6 +58,13 @@ public class BasketActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.basket_menu, menu);
+
+        // if the basket is empty, then do not show select/unselect all button
+        MenuItem item = menu.findItem(id.selectBtn);
+        if (recyclerAdapter.getItemCount() == 0) {
+            item.setVisible(false);
+            this.invalidateOptionsMenu();
+        }
         return true;
     }
 

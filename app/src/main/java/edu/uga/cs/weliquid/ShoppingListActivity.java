@@ -80,6 +80,8 @@ public class ShoppingListActivity
                 } else {
                     Log.d(DEBUG_TAG, "go to basket activity");
                     recyclerAdapter.addToBasket();
+                    Toast.makeText(getApplicationContext(), "Item(s) added to basket",
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         });

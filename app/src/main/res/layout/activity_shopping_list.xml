@@ -6,15 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ShoppingListActivity">
 
-    <Button
-        android:id="@+id/buy_items"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="BUY ITEMS"
-        app:layout_constraintBottom_toTopOf="@id/recyclerView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.95"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
@@ -41,6 +32,6 @@
         android:scrollbars="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buy_items" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

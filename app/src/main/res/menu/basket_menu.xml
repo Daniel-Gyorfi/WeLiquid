@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".BasketActivity">
+
+    <item
+        android:id="@+id/selectBtn"
+        android:title="SELECT ALL"
+        app:showAsAction="always"
+        />
+
     <item
         android:id="@+id/logout"
         android:title="LOG OUT"

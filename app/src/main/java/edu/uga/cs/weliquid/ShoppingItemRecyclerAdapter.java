@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -78,13 +79,25 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
         holder.itemName.setText( shoppingItem.getItemName() );
         holder.rmName.setText( shoppingItem.getRmName() );
         holder.itemTime.setText( shoppingItem.getItemTime() );
-        if (!selectAll) {
-            holder.box.setChecked(false);
-//            basketList.remove(Integer.valueOf(holder.position));
+
+        if (!addBasket) {
+            if (!selectAll) {
+                // if unselect btn is clicked and basket btn is not clicked yet
+                holder.box.setChecked(false);
+                basketList.remove(Integer.valueOf(holder.position));
+            } else {
+                // if select all btn is clicked and basket btn is not clicked yet
+                holder.box.setChecked(true);
+                basketList.add(holder.position);
+            }
         } else {
-            holder.box.setChecked(true);
+            if (!selectAll) {
+                // after basket btn is clicked, all checkboxes in shopping list are unchecked
+                holder.box.setChecked(false);
+            }
         }
 
+        // this is what happens once the basket btn is clicked
         if (addBasket && basketList.contains(position)) {
             Log.d(DEBUG_TAG, "contains: " + position);
             ShopBasket.getInstance().add( shoppingItem );
@@ -143,6 +156,7 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
         selectAll = true;
         numChecks = getItemCount();
         ShoppingListActivity.setBasketButton();
+        basketList.clear();
         notifyDataSetChanged();
     }
 
@@ -150,6 +164,7 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
         selectAll = false;
         numChecks = 0;
         ShoppingListActivity.setAddButton();
+        basketList.clear();
         notifyDataSetChanged();
     }
 
