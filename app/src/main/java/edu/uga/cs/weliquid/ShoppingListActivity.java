@@ -74,7 +74,7 @@ public class ShoppingListActivity
         floatingButton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isAddButton == true) {
+                if (isAddButton) {
                     DialogFragment newFragment = new AddShoppingItemDialogFragment();
                     newFragment.show( getSupportFragmentManager(), null);
                 } else {

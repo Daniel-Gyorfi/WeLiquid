@@ -156,7 +156,6 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
         selectAll = true;
         numChecks = getItemCount();
         ShoppingListActivity.setBasketButton();
-        basketList.clear();
         notifyDataSetChanged();
     }
 
@@ -164,7 +163,6 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
         selectAll = false;
         numChecks = 0;
         ShoppingListActivity.setAddButton();
-        basketList.clear();
         notifyDataSetChanged();
     }
 
