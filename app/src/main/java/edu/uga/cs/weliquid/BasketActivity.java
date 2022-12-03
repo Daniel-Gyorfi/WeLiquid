@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,8 +20,17 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 
 import edu.uga.cs.weliquid.R.id;
 
@@ -35,7 +45,7 @@ public class BasketActivity extends AppCompatActivity {
 //    private List<ShoppingItem> shoppingItemsList;
     private FirebaseDatabase database;
     public static FloatingActionButton actionBtn;
-    public static boolean isHelpButton = true;
+    public static int buttonChoice = 1;
     private static Menu basketMenu;
 
     @Override
@@ -59,15 +69,58 @@ public class BasketActivity extends AppCompatActivity {
         recyclerAdapter = new BasketRecyclerAdapter( ShopBasket.getInstance(), BasketActivity.this );
         recyclerView.setAdapter( recyclerAdapter );
 
+        if (recyclerAdapter.getItemCount() > 0) {
+            setPurchaseButton();
+        } else {
+            setHelpButton();
+        }
+
         actionBtn.setOnClickListener( new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                if (isHelpButton) {
+            public void onClick(View view) {
+                if (buttonChoice == 1) {
                     DialogFragment helpFragment = new HelpDialogFragment();
                     helpFragment.show(getSupportFragmentManager(), null);
+                } else if (buttonChoice == 2) {
+                    Log.d(DEBUG_TAG, "purchase button clicked");
+
+                    ArrayList<String> items = ShopBasket.getInstance().getList();
+
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    String rmName = user.getEmail();
+
+                    Calendar calendar = Calendar.getInstance();
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy HH:mm:ss z");
+                    String date = dateFormat.format(calendar.getTime());
+
+                    PurchaseBasketItem basket = new PurchaseBasketItem(items, "$three-fiddy", rmName, date);
+
+                    DatabaseReference fire = FirebaseDatabase.getInstance()
+                            .getReference("purchaseItems");
+
+                    fire.push().setValue(basket)
+                            .addOnSuccessListener( new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d( DEBUG_TAG, "Purchase list item saved: " + basket );
+                                    ShopBasket.getInstance().clear();
+                                    // Show a quick confirmation
+                                    Toast.makeText(getApplicationContext(), "Basket added to purchase list",
+                                            Toast.LENGTH_SHORT).show();
+                                    Intent viewPurchase = new Intent(view.getContext(), PurchasedListActivity.class);
+                                    viewPurchase.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    view.getContext().startActivity(viewPurchase);
+                                }
+                            })
+                            .addOnFailureListener( new OnFailureListener() {
+                                @Override
+                                public void onFailure( @NonNull Exception e ) {
+                                    Toast.makeText(getApplicationContext(), "Failed to add basket to purchase list",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            });
                 } else {
-                    DialogFragment optionsFragment = new BasketOptionsDialogFragment(getApplicationContext());
-                    optionsFragment.show(getSupportFragmentManager(), null);
+                    itemsRemoved();
                 }
             }
         });
@@ -109,12 +162,17 @@ public class BasketActivity extends AppCompatActivity {
 
     public void setHelpButton() {
         actionBtn.setImageResource(R.drawable.ic_baseline_question_mark_24);
-        isHelpButton = true;
+        buttonChoice = 1;
     }
 
-    public void setOptionsButton() {
-        actionBtn.setImageResource(R.drawable.ic_baseline_menu_24);
-        isHelpButton = false;
+    public void setPurchaseButton() {
+        actionBtn.setImageResource(R.drawable.ic_baseline_attach_money_24);
+        buttonChoice = 2;
+    }
+
+    public void setRemoveButton() {
+        actionBtn.setImageResource(R.drawable.ic_baseline_cancel_24);
+        buttonChoice = 3;
     }
 
     public void unselectTitle() {
@@ -188,15 +246,14 @@ public class BasketActivity extends AppCompatActivity {
 
             if (isRemoved) {
                 if (holder.checkBox.isChecked()) {
-                    basket.items.remove(position);
                     Toast.makeText(getApplicationContext(), "Item(s) removed from basket",
                             Toast.LENGTH_SHORT).show();
                 }
-                MenuItem selectionItem = basketMenu.findItem(R.id.selectBtn);
-                if (getItemCount() == 0) {
-                    selectionItem.setVisible(false);
-                    invalidateOptionsMenu();
-                }
+//                MenuItem selectionItem = basketMenu.findItem(R.id.selectBtn);
+//                if (getItemCount() == 0) {
+//                    selectionItem.setVisible(false);
+//                    invalidateOptionsMenu();
+//                }
             } else {
                 holder.checkBox.setChecked(isSelectAll);
             }
@@ -212,10 +269,14 @@ public class BasketActivity extends AppCompatActivity {
                         Log.d(DEBUG_TAG, "num of selected checkbox: " + numChecks);
                     }
                     if (numChecks > 0) {
-                        setOptionsButton();
+                        setRemoveButton();
                         unselectTitle();
                     } else {
-                        setHelpButton();
+                        if (getItemCount() == 0) {
+                            setHelpButton();
+                        } else {
+                            setPurchaseButton();
+                        }
                         selectTitle();
                     }
                 }
@@ -230,14 +291,14 @@ public class BasketActivity extends AppCompatActivity {
         public void setSelectAll() {
             isSelectAll = true;
             numChecks = getItemCount();
-            setOptionsButton();
+            setRemoveButton();
             notifyDataSetChanged();
         }
 
         public void setUnselectAll() {
             isSelectAll = false;
             numChecks = 0;
-            setHelpButton();
+            setPurchaseButton();
             notifyDataSetChanged();
         }
 
@@ -245,7 +306,7 @@ public class BasketActivity extends AppCompatActivity {
             Log.d(DEBUG_TAG, "removeItems() is called");
             isRemoved = true;
             selectTitle();
-            setHelpButton();
+            setPurchaseButton();
             notifyDataSetChanged();
         }
     }
