@@ -30,8 +30,9 @@ import edu.uga.cs.weliquid.R.id;
  */
 public class BasketActivity extends AppCompatActivity {
 
+    public static final String DEBUG_TAG = "BasketActivity";
     private RecyclerView recyclerView;
-    private BasketRecyclerAdapter recyclerAdapter;
+    private static BasketRecyclerAdapter recyclerAdapter;
 //    private List<ShoppingItem> shoppingItemsList;
     private FirebaseDatabase database;
     public static FloatingActionButton actionBtn;
@@ -117,14 +118,19 @@ public class BasketActivity extends AppCompatActivity {
         isHelpButton = false;
     }
 
-    public static void unselectTitle() {
+    public void unselectTitle() {
         MenuItem item = basketMenu.findItem(R.id.selectBtn);
         item.setTitle("UNSELECT");
     }
 
-    public static void selectTitle() {
+    public void selectTitle() {
         MenuItem item = basketMenu.findItem(R.id.selectBtn);
         item.setTitle("SELECT ALL");
+    }
+
+    public static void itemsRemoved() {
+        Log.d(DEBUG_TAG, "itemsRemoved is called");
+        recyclerAdapter.removeItems();
     }
 
     @Override
@@ -141,6 +147,7 @@ public class BasketActivity extends AppCompatActivity {
         int numChecks = 0;
         boolean isSelectAll = false;
         boolean addPurchased = false;
+        boolean isRemoved = false;
 
         public BasketRecyclerAdapter( ShopBasket shopBasket, Context context ) {
             this.basket = shopBasket;
@@ -180,10 +187,12 @@ public class BasketActivity extends AppCompatActivity {
             holder.rmName.setText( item.getRmName() );
             holder.itemTime.setText( item.getItemTime() );
 
-            if (!isSelectAll) {
-                holder.checkBox.setChecked(false);
+            if (isRemoved) {
+                if (holder.checkBox.isChecked()) {
+                    Log.d(DEBUG_TAG, "remove this one");
+                }
             } else {
-                holder.checkBox.setChecked(true);
+                holder.checkBox.setChecked(isSelectAll);
             }
 
             holder.checkBox.setOnClickListener(new View.OnClickListener() {
@@ -222,6 +231,14 @@ public class BasketActivity extends AppCompatActivity {
         public void setUnselectAll() {
             isSelectAll = false;
             numChecks = 0;
+            setHelpButton();
+            notifyDataSetChanged();
+        }
+
+        public void removeItems() {
+            Log.d(DEBUG_TAG, "removeItems() is called");
+            isRemoved = true;
+            selectTitle();
             setHelpButton();
             notifyDataSetChanged();
         }

@@ -131,6 +131,7 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
                     Log.d(DEBUG_TAG, "num of selected checkbox: " + numChecks);
                 } else {
                     numChecks--;
+                    // matches the Integer object, not the index in basket list
                     basketList.remove(Integer.valueOf(holder.position));
                     Log.d(DEBUG_TAG, "num of selected checkbox: " + numChecks);
                 }
@@ -170,6 +171,8 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
         addBasket = true;
         selectAll = false;
         numChecks = 0;
+        ShoppingListActivity.setSelectTitle();
+        ShoppingListActivity.setAddButton();
         notifyDataSetChanged();
     }
 }

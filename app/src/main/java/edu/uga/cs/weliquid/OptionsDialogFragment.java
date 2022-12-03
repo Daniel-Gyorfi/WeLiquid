@@ -49,6 +49,7 @@ public class OptionsDialogFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 Log.d(DEBUG_TAG, "purchase button clicked");
+                dismiss();
             }
         });
 
@@ -56,6 +57,8 @@ public class OptionsDialogFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 Log.d(DEBUG_TAG, "remove button clicked");
+                BasketActivity.itemsRemoved();
+                dismiss();
             }
         });
 
