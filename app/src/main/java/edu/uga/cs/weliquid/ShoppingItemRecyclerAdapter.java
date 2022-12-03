@@ -24,7 +24,7 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
     public static final String DEBUG_TAG = "ShopItemRecyclerAdapter";
 
     private List<ShoppingItem> shoppingList;
-    private List<Integer> basketList;
+    private List<String> basketList;
 
     private Context context;
     int numChecks = 0;
@@ -33,7 +33,7 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
 
     public ShoppingItemRecyclerAdapter( List<ShoppingItem> shoppingList, Context context ) {
         this.shoppingList = shoppingList;
-        this.basketList = new ArrayList<Integer>();
+        this.basketList = new ArrayList<String>();
         this.context = context;
     }
 
@@ -84,11 +84,11 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
             if (!selectAll) {
                 // if unselect btn is clicked and basket btn is not clicked yet
                 holder.box.setChecked(false);
-                basketList.remove(Integer.valueOf(holder.position));
+                basketList.remove(key);
             } else {
                 // if select all btn is clicked and basket btn is not clicked yet
                 holder.box.setChecked(true);
-                basketList.add(holder.position);
+                basketList.add(key);
             }
         } else {
             if (!selectAll) {
@@ -98,10 +98,10 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
         }
 
         // this is what happens once the basket btn is clicked
-        if (addBasket && basketList.contains(position)) {
-            Log.d(DEBUG_TAG, "contains: " + position);
+        if (addBasket && basketList.contains(key)) {
+            Log.d(DEBUG_TAG, "contains: " + key);
             ShopBasket.getInstance().add( shoppingItem );
-            basketList.remove(Integer.valueOf(holder.position));
+            basketList.remove(key);
             if (basketList.isEmpty()) addBasket = false;
         }
 
@@ -126,13 +126,13 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
             @Override
             public void onClick(View v) {
                 if (holder.box.isChecked()) {
-                    basketList.add(holder.position);
+                    basketList.add(key);
                     numChecks++;
                     Log.d(DEBUG_TAG, "num of selected checkbox: " + numChecks);
                 } else {
                     numChecks--;
                     // matches the Integer object, not the index in basket list
-                    basketList.remove(Integer.valueOf(holder.position));
+                    basketList.remove(key);
                     Log.d(DEBUG_TAG, "num of selected checkbox: " + numChecks);
                 }
                 if (numChecks > 0) {
