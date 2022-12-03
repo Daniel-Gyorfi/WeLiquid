@@ -22,8 +22,6 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.List;
-
 import edu.uga.cs.weliquid.R.id;
 
 /**
