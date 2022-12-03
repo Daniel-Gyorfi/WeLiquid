@@ -21,6 +21,10 @@ public class ShopBasket {
             items.add( item );
         }
 
+        public void clear() {
+            this.items.clear();
+        }
+
         public Boolean empty() {
             return items.isEmpty();
         }

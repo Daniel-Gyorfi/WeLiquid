@@ -4,6 +4,7 @@ import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,10 +34,15 @@ public class BasketOptionsDialogFragment extends DialogFragment {
     private static final String DEBUG_TAG = "OptionsDialogFragment";
     private Button purchaseBtn;
     private Button removeBtn;
+    private Context context;
 
-    public static BasketOptionsDialogFragment newInstance() {
-        BasketOptionsDialogFragment dialog = new BasketOptionsDialogFragment();
+    public static BasketOptionsDialogFragment newInstance(Context context) {
+        BasketOptionsDialogFragment dialog = new BasketOptionsDialogFragment(context);
         return dialog;
+    }
+
+    public BasketOptionsDialogFragment(Context context) {
+        this.context = context;
     }
 
     @NonNull
@@ -83,19 +89,22 @@ public class BasketOptionsDialogFragment extends DialogFragment {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 Log.d( DEBUG_TAG, "Purchase list item saved: " + basket );
+                                ShopBasket.getInstance().clear();
                                 // Show a quick confirmation
-                                Toast.makeText(getContext(), "Basket added to purchase list",
+                                Toast.makeText(context, "Basket added to purchase list",
                                         Toast.LENGTH_SHORT).show();
+                                Intent viewPurcahse = new Intent(context, PurchasedListActivity.class);
+                                viewPurcahse.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                context.startActivity(viewPurcahse);
                             }
                         })
                         .addOnFailureListener( new OnFailureListener() {
                             @Override
                             public void onFailure( @NonNull Exception e ) {
-                                Toast.makeText(getContext(), "Failed to add basket to purchase list",
+                                Toast.makeText(context, "Failed to add basket to purchase list",
                                         Toast.LENGTH_SHORT).show();
                             }
                         });
-
                 dismiss();
             }
         });

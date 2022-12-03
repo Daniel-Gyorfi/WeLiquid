@@ -63,7 +63,7 @@ public class PurchasedListActivity extends AppCompatActivity {
 
         // get a Firebase DB instance reference
         database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("purchasedItems");
+        DatabaseReference myRef = database.getReference("purchaseItems");
 
         // Set up a listener (event handler) to receive a value for the database reference.
         // This type of listener is called by Firebase once by immediately executing its onDataChange method

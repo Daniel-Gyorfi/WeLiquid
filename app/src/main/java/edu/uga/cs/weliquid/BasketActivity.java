@@ -66,7 +66,7 @@ public class BasketActivity extends AppCompatActivity {
                     DialogFragment helpFragment = new HelpDialogFragment();
                     helpFragment.show(getSupportFragmentManager(), null);
                 } else {
-                    DialogFragment optionsFragment = new BasketOptionsDialogFragment();
+                    DialogFragment optionsFragment = new BasketOptionsDialogFragment(getApplicationContext());
                     optionsFragment.show(getSupportFragmentManager(), null);
                 }
             }
