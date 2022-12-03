@@ -2,7 +2,6 @@ package edu.uga.cs.weliquid;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,15 +12,16 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
-import java.security.cert.PKIXRevocationChecker;
-
-public class OptionsDialogFragment extends DialogFragment {
+/**
+ * BasketActivity options dialog when selecting items
+ */
+public class BasketOptionsDialogFragment extends DialogFragment {
     private static final String DEBUG_TAG = "OptionsDialogFragment";
     private Button purchaseBtn;
     private Button removeBtn;
 
-    public static OptionsDialogFragment newInstance() {
-        OptionsDialogFragment dialog = new OptionsDialogFragment();
+    public static BasketOptionsDialogFragment newInstance() {
+        BasketOptionsDialogFragment dialog = new BasketOptionsDialogFragment();
         return dialog;
     }
 

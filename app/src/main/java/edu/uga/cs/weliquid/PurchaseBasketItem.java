@@ -3,8 +3,8 @@ package edu.uga.cs.weliquid;
 import java.util.ArrayList;
 
 /**
- * This class represents a single item in the shopping list, including the
- * name of the item and the roommate who added the item to the list.
+ * A single item in the shopping list, including the
+ * name of the item and the roommate who added the item to the list
  */
 public class PurchaseBasketItem {
     private String key;
