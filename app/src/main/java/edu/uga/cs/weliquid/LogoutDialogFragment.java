@@ -13,6 +13,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class LogoutDialogFragment extends DialogFragment {
 
     public static LogoutDialogFragment newInstance() {
@@ -54,6 +58,8 @@ public class LogoutDialogFragment extends DialogFragment {
     private class LogoutListener implements DialogInterface.OnClickListener {
         @Override
         public void onClick(DialogInterface dialog, int whichButton) {
+            FirebaseAuth.getInstance().signOut();
+
             Intent intent = new Intent(getContext(), MainActivity.class);
             getContext().startActivity(intent);
         }
