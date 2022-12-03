@@ -24,4 +24,12 @@ public class ShopBasket {
         public Boolean empty() {
             return items.isEmpty();
         }
+
+        public ArrayList<String> getList() {
+            ArrayList<String> list = new ArrayList<>();
+            for (ShoppingItem item : items) {
+                list.add(item.getItemName());
+            }
+            return list;
+        }
 }

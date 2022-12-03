@@ -11,20 +11,23 @@ public class PurchaseBasketItem {
     private ArrayList<String> itemList;
     private String rmName;
     private String itemTime;
+    private String cost;
 
     public PurchaseBasketItem() {
         this.key = null;
         this.itemList = null;
         this.rmName = null;
         this.itemTime = null;
+        this.cost = null;
     }
 
     public PurchaseBasketItem(ArrayList<String> items) {
         this.itemList = items;
     }
 
-    public PurchaseBasketItem(ArrayList<String> items, String rmName, String itemTime) {
+    public PurchaseBasketItem(ArrayList<String> items, String price, String rmName, String itemTime) {
         this.itemList = items;
+        this.cost = price;
         this.rmName = rmName;
         this.itemTime = itemTime;
     }

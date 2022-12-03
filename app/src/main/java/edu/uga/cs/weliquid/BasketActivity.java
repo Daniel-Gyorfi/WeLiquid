@@ -21,8 +21,6 @@ import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.List;
-
 import edu.uga.cs.weliquid.R.id;
 
 /**
@@ -67,7 +65,7 @@ public class BasketActivity extends AppCompatActivity {
                     DialogFragment helpFragment = new HelpDialogFragment();
                     helpFragment.show(getSupportFragmentManager(), null);
                 } else {
-                    DialogFragment optionsFragment = new OptionsDialogFragment();
+                    DialogFragment optionsFragment = new BasketOptionsDialogFragment();
                     optionsFragment.show(getSupportFragmentManager(), null);
                 }
             }
