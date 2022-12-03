@@ -32,7 +32,8 @@ import java.util.List;
  * The current items are listed as a RecyclerView.
  */
 public class ShoppingListActivity
-        extends AppCompatActivity  {
+        extends AppCompatActivity implements EditShoppingItemDialogFragment.EditItemDialogListener,
+        AddShoppingItemDialogFragment.AddShoppingItemDialogListener {
 
     public static final String DEBUG_TAG = "ShoppingListActivity";
 
@@ -139,10 +140,8 @@ public class ShoppingListActivity
         } else if (id == R.id.select) {
             if (item.getTitle().equals("SELECT ALL")) {
                 recyclerAdapter.selectAll();
-                setUnselectTitle();
             } else if (item.getTitle().equals("UNSELECT")) {
                 recyclerAdapter.unselectAll();
-                setSelectTitle();
             }
         }
         return super.onOptionsItemSelected(item);

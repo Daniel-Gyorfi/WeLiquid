@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.FirebaseDatabase;
@@ -189,7 +190,14 @@ public class BasketActivity extends AppCompatActivity {
 
             if (isRemoved) {
                 if (holder.checkBox.isChecked()) {
-                    Log.d(DEBUG_TAG, "remove this one");
+                    basket.items.remove(position);
+                    Toast.makeText(getApplicationContext(), "Item(s) removed from basket",
+                            Toast.LENGTH_SHORT).show();
+                }
+                MenuItem selectionItem = basketMenu.findItem(R.id.selectBtn);
+                if (getItemCount() == 0) {
+                    selectionItem.setVisible(false);
+                    invalidateOptionsMenu();
                 }
             } else {
                 holder.checkBox.setChecked(isSelectAll);

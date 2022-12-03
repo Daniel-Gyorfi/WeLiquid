@@ -17,10 +17,6 @@ public class ShoppingItem {
         this.itemTime = null;
     }
 
-    public ShoppingItem(String itemName) {
-        this.itemName = itemName;
-    }
-
     public ShoppingItem(String itemName, String rmName, String itemTime) {
         this.itemName = itemName;
         this.rmName = rmName;
