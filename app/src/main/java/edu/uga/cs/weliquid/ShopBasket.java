@@ -37,7 +37,7 @@ public class ShopBasket {
             items.add( item );
         }
 
-        public void remove(ShoppingItem item) {items.remove( item ); }
+        public void remove(ShoppingItem item) { items.remove( item ); }
 
         public void clear() {
             this.items.clear();

@@ -32,6 +32,7 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 
 import edu.uga.cs.weliquid.R.id;
@@ -305,11 +306,10 @@ public class BasketActivity extends AppCompatActivity
 
         public void removeItems() {
             Log.d(DEBUG_TAG, "removeItems() is called");
+
             for (String key : basketKeyList) {
-                for (ShoppingItem item : basket.items) {
-                    if (key.equals(item.getKey())) {
-                        ShopBasket.getInstance().remove(item);
-                    }
+                if (basket.containsKey(key)) {
+
                 }
             }
             basketKeyList.clear();
