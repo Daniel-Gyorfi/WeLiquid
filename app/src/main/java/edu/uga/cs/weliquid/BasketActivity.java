@@ -28,6 +28,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -38,7 +39,8 @@ import edu.uga.cs.weliquid.R.id;
 /**
  * The Basket Screen is shown here,
  */
-public class BasketActivity extends AppCompatActivity {
+public class BasketActivity extends AppCompatActivity
+    implements EnterPriceDialogFragment.EnterPriceDialogListener {
 
     public static final String DEBUG_TAG = "BasketActivity";
     private RecyclerView recyclerView;
@@ -85,45 +87,10 @@ public class BasketActivity extends AppCompatActivity {
                 } else if (buttonChoice == 2) { // "Purchase" basket
                     Log.d(DEBUG_TAG, "purchase button clicked");
 
-                    ArrayList<String> items = ShopBasket.getInstance().getList();
-
-                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                    String rmName = user.getEmail();
-
-                    Calendar calendar = Calendar.getInstance();
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy HH:mm:ss z");
-                    String date = dateFormat.format(calendar.getTime());
-
-                    PurchaseBasketItem basket = new PurchaseBasketItem(items, "$three-fiddy", rmName, date);
-
-                    DatabaseReference fire = FirebaseDatabase.getInstance()
-                            .getReference("purchaseItems");
-                    fire.push().setValue(basket)
-                            .addOnSuccessListener( new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    Log.d( DEBUG_TAG, "Purchase list item saved: " + basket );
-                                    ShopBasket.getInstance().clear();
-                                    // Show a quick confirmation
-                                    Toast.makeText(getApplicationContext(), "Basket added to purchase list",
-                                            Toast.LENGTH_SHORT).show();
-                                    Intent viewPurchase = new Intent(view.getContext(), PurchasedListActivity.class);
-                                    viewPurchase.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    view.getContext().startActivity(viewPurchase);
-
-                                    //remove basket items from shopping list
+                    DialogFragment newFragment = new EnterPriceDialogFragment();
+                    newFragment.show( getSupportFragmentManager(), null);
 
 
-                                }
-                            })
-                            .addOnFailureListener( new OnFailureListener() {
-                                @Override
-                                public void onFailure( @NonNull Exception e ) {
-                                    Toast.makeText(getApplicationContext(), "Failed to add basket to purchase list",
-                                            Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                    ShopBasket.getInstance().removeFromShoppingList(getApplicationContext());
                 } else if (buttonChoice == 3){
                     itemsRemoved();
                 }
@@ -199,6 +166,46 @@ public class BasketActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+    }
+
+    public void enterItemPrice(BigDecimal value) {
+        ArrayList<String> items = ShopBasket.getInstance().getList();
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String rmName = user.getEmail();
+
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy HH:mm:ss z");
+        String date = dateFormat.format(calendar.getTime());
+
+        String price = "$" + value.toString();
+
+        PurchaseBasketItem basket = new PurchaseBasketItem(items, price, rmName, date);
+
+        DatabaseReference fire = FirebaseDatabase.getInstance()
+                .getReference("purchaseItems");
+        fire.push().setValue(basket)
+                .addOnSuccessListener( new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d( DEBUG_TAG, "Purchase list item saved: " + basket );
+                        ShopBasket.getInstance().clear();
+                        // Show a quick confirmation
+                        Toast.makeText(getApplicationContext(), "Basket added to purchase list",
+                                Toast.LENGTH_SHORT).show();
+                        Intent viewPurchase = new Intent(getApplicationContext(), PurchasedListActivity.class);
+                        viewPurchase.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        getApplicationContext().startActivity(viewPurchase);
+                    }
+                })
+                .addOnFailureListener( new OnFailureListener() {
+                    @Override
+                    public void onFailure( @NonNull Exception e ) {
+                        Toast.makeText(getApplicationContext(), "Failed to add basket to purchase list",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+        ShopBasket.getInstance().removeFromShoppingList(getApplicationContext());
     }
 
     private class BasketRecyclerAdapter extends RecyclerView.Adapter<BasketRecyclerAdapter.BasketItemHolder> {
