@@ -97,7 +97,6 @@ public class BasketActivity extends AppCompatActivity {
 
                     DatabaseReference fire = FirebaseDatabase.getInstance()
                             .getReference("purchaseItems");
-
                     fire.push().setValue(basket)
                             .addOnSuccessListener( new OnSuccessListener<Void>() {
                                 @Override
@@ -110,6 +109,10 @@ public class BasketActivity extends AppCompatActivity {
                                     Intent viewPurchase = new Intent(view.getContext(), PurchasedListActivity.class);
                                     viewPurchase.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     view.getContext().startActivity(viewPurchase);
+
+                                    //remove basket items from shopping list
+
+
                                 }
                             })
                             .addOnFailureListener( new OnFailureListener() {
@@ -119,6 +122,8 @@ public class BasketActivity extends AppCompatActivity {
                                             Toast.LENGTH_SHORT).show();
                                 }
                             });
+
+                    ShopBasket.getInstance().removeFromShoppingList(getApplicationContext());
                 } else { // Remove items
                     itemsRemoved();
                 }

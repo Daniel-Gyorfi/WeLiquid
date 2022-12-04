@@ -1,8 +1,24 @@
 package edu.uga.cs.weliquid;
 
+import static com.firebase.ui.auth.AuthUI.getApplicationContext;
+
+import android.content.Context;
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 
 public class ShopBasket {
+    private static final String DEBUG_TAG = "ShopBasket";
     ArrayList<ShoppingItem> items;
     static ShopBasket instance;
 
@@ -42,5 +58,35 @@ public class ShopBasket {
                 list.add( item.getItemName() );
             }
             return list;
+        }
+
+        public void removeFromShoppingList(Context context) {
+            //remove basket items from shopping list
+            DatabaseReference fire = FirebaseDatabase.getInstance()
+                    .getReference("shoppingItems");
+            for (ShoppingItem item : items) {
+                DatabaseReference ref = fire.child( item.getKey() );
+
+                // This listener will be invoked asynchronously, hence no need for an AsyncTask class.
+                ref.addListenerForSingleValueEvent( new ValueEventListener() {
+                    @Override
+                    public void onDataChange( @NonNull DataSnapshot dataSnapshot ) {
+                        dataSnapshot.getRef().removeValue().addOnSuccessListener( new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d( DEBUG_TAG, "deleted shopping list item: (" + item.getItemName() + ")" );
+                                Toast.makeText(context, "Shopping list card deleted for " + item.getItemName(),
+                                        Toast.LENGTH_SHORT).show();                        }
+                        });
+                    }
+
+                    @Override
+                    public void onCancelled( @NonNull DatabaseError databaseError ) {
+                        Log.d( DEBUG_TAG, "failed to delete shopping list item: (" + item.getItemName() + ")" );
+                        Toast.makeText(context, "Failed to delete " + item.getItemName(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         }
 }
