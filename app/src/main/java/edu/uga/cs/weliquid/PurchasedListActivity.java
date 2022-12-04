@@ -134,6 +134,7 @@ public class PurchasedListActivity extends AppCompatActivity {
 
             int position = -1;
             TextView itemName;
+            TextView price;
             TextView rmName;
             TextView itemTime;
             CheckBox box;
@@ -142,6 +143,7 @@ public class PurchasedListActivity extends AppCompatActivity {
                 super(itemView);
 
                 itemName = itemView.findViewById(R.id.itemName);
+                price = itemView.findViewById(R.id.priceView);
                 rmName = itemView.findViewById(R.id.roommateName);
                 itemTime = itemView.findViewById(R.id.userTime);
                 box = itemView.findViewById(R.id.checkBox);
@@ -151,7 +153,7 @@ public class PurchasedListActivity extends AppCompatActivity {
         @NonNull
         @Override
         public PurchaseItemRecyclerAdapter.PurchaseItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.shopping_item, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.purchase_basket_item, parent, false);
             return new PurchaseItemRecyclerAdapter.PurchaseItemHolder(view);
         }
 
@@ -163,12 +165,10 @@ public class PurchasedListActivity extends AppCompatActivity {
             Log.d(DEBUG_TAG, "Bind: " + position);
 
             String key = purchaseItem.getKey();
-            String itemName = String.valueOf(purchaseItem.getItemList());
-            String userName = purchaseItem.getRmName();
-            String userTime = purchaseItem.getItemTime();
 
             holder.position = position;
             holder.itemName.setText(purchaseItem.toItemString());
+            holder.price.setText(purchaseItem.getCost());
             holder.rmName.setText(purchaseItem.getRmName());
             holder.itemTime.setText(purchaseItem.getItemTime());
 

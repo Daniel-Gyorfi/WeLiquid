@@ -61,4 +61,8 @@ public class PurchaseBasketItem {
         output = output.replace(" ", "\n");
         return output;
     }
+
+    public String getCost() {
+        return cost;
+    }
 }
