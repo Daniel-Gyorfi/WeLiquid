@@ -39,6 +39,14 @@ public class ShopBasket {
 
         public void remove(ShoppingItem item) { items.remove( item ); }
 
+        public void removeKey(String key) {
+            for ( ShoppingItem item : items ) {
+                if ( key.equals(item.getKey()) )
+                    items.remove(item);
+                    break;
+            }
+        }
+
         public void clear() {
             this.items.clear();
         }

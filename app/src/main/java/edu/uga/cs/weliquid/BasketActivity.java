@@ -309,7 +309,7 @@ public class BasketActivity extends AppCompatActivity
 
             for (String key : basketKeyList) {
                 if (basket.containsKey(key)) {
-
+                    basket.removeKey(key);
                 }
             }
             basketKeyList.clear();
