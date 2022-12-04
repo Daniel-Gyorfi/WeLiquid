@@ -258,6 +258,12 @@ public class BasketActivity extends AppCompatActivity
             holder.rmName.setText( item.getRmName() );
             holder.itemTime.setText( item.getItemTime() );
 
+            if (isSelectAll) {
+                holder.checkBox.setChecked(true);
+                numChecks++;
+                basketKeyList.add(basketKey);
+            }
+
             holder.checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
