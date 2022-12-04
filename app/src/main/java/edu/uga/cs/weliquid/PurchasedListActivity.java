@@ -158,19 +158,19 @@ public class PurchasedListActivity extends AppCompatActivity {
         // This method fills in the values of the Views to show a ShoppingItem
         @Override
         public void onBindViewHolder(PurchaseItemRecyclerAdapter.PurchaseItemHolder holder, @SuppressLint("RecyclerView") int position) {
-            PurchaseBasketItem shoppingItem = purchaseList.get(position);
+            PurchaseBasketItem purchaseItem = purchaseList.get(position);
 
             Log.d(DEBUG_TAG, "Bind: " + position);
 
-            String key = shoppingItem.getKey();
-            String itemName = String.valueOf(shoppingItem.getItemList());
-            String userName = shoppingItem.getRmName();
-            String userTime = shoppingItem.getItemTime();
+            String key = purchaseItem.getKey();
+            String itemName = String.valueOf(purchaseItem.getItemList());
+            String userName = purchaseItem.getRmName();
+            String userTime = purchaseItem.getItemTime();
 
             holder.position = position;
-            holder.itemName.setText(shoppingItem.getItemList().toString());
-            holder.rmName.setText(shoppingItem.getRmName());
-            holder.itemTime.setText(shoppingItem.getItemTime());
+            holder.itemName.setText(purchaseItem.toItemString());
+            holder.rmName.setText(purchaseItem.getRmName());
+            holder.itemTime.setText(purchaseItem.getItemTime());
 
             // We can attach an OnClickListener to the itemView of the holder;
             // itemView is a public field in the Holder class.

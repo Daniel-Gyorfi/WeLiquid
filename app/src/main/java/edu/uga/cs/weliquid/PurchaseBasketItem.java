@@ -51,4 +51,14 @@ public class PurchaseBasketItem {
     public String getItemTime() { return itemTime; }
 
     public void setItemTime(String itemTime) { this.itemTime = itemTime; }
+
+    public String toItemString() {
+        String output = "";
+        for (String item : itemList) {
+            output += item + " ";
+        }
+        output = output.trim();
+        output = output.replace(" ", "\n");
+        return output;
+    }
 }

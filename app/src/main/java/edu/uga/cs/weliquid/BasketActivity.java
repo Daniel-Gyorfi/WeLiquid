@@ -78,10 +78,10 @@ public class BasketActivity extends AppCompatActivity {
         actionBtn.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (buttonChoice == 1) {
+                if (buttonChoice == 1) { // Show Help Dialog
                     DialogFragment helpFragment = new HelpDialogFragment();
                     helpFragment.show(getSupportFragmentManager(), null);
-                } else if (buttonChoice == 2) {
+                } else if (buttonChoice == 2) { // "Purchase" basket
                     Log.d(DEBUG_TAG, "purchase button clicked");
 
                     ArrayList<String> items = ShopBasket.getInstance().getList();
@@ -119,7 +119,7 @@ public class BasketActivity extends AppCompatActivity {
                                             Toast.LENGTH_SHORT).show();
                                 }
                             });
-                } else {
+                } else { // Remove items
                     itemsRemoved();
                 }
             }
