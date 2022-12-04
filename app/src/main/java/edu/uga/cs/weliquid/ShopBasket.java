@@ -41,9 +41,12 @@ public class ShopBasket {
 
         public void removeKey(String key) {
             for ( ShoppingItem item : items ) {
-                if ( key.equals(item.getKey()) )
+                if ( key.equals(item.getKey()) ) {
                     items.remove(item);
+                    // removing an item from the list will break the iterator
+                    // no need to iterate once the item has been removed
                     break;
+                }
             }
         }
 
