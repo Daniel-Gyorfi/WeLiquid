@@ -1,5 +1,9 @@
 package edu.uga.cs.weliquid;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
 /**
  * This class represents a single item in the shopping list, including the
  * name of the item and the roommate who added the item to the list.
@@ -42,4 +46,13 @@ public class ShoppingItem {
     public String getItemTime() { return itemTime; }
 
     public void setItemTime(String itemTime) { this.itemTime = itemTime; }
+
+//    public boolean equals(@NonNull ShoppingItem item) {
+//        Log.d("Shopping Item", "key: " + this.key + " " +
+//                item.getKey() + " name " + this.itemName + " " + item.getItemName());
+//        return item.getKey().equals(this.key)
+//                && item.getItemName().equals(this.itemName)
+//                && item.getRmName().equals(this.rmName)
+//                && item.getItemName().equals(this.rmName);
+//    }
 }

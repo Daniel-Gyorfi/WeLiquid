@@ -88,7 +88,7 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
             } else {
                 // if select all btn is clicked and basket btn is not clicked yet
                 holder.box.setChecked(true);
-                basketList.add(key);
+                addToTemp(key);
             }
         } else {
             if (!selectAll) {
@@ -126,7 +126,8 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
             @Override
             public void onClick(View v) {
                 if (holder.box.isChecked()) {
-                    basketList.add(key);
+//                    basketList.add(key);
+                    addToTemp(key);
                     numChecks++;
                     Log.d(DEBUG_TAG, "num of selected checkbox: " + numChecks);
                 } else {
@@ -167,6 +168,13 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
         ShoppingListActivity.setAddButton();
         ShoppingListActivity.setSelectTitle();
         notifyDataSetChanged();
+    }
+
+    private void addToTemp(String key) {
+        if (!ShopBasket.getInstance().containsKey(key))
+        {
+            basketList.add(key);
+        }
     }
 
     public void addToBasket() {

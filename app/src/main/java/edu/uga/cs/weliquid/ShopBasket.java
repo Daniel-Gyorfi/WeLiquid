@@ -25,14 +25,21 @@ public class ShopBasket {
             this.items.clear();
         }
 
+        public boolean containsKey( String key ) {
+            for ( ShoppingItem item : items ) {
+                if ( key.equals(item.getKey()) ) return true;
+            }
+            return false;
+        }
+
         public Boolean empty() {
             return items.isEmpty();
         }
 
         public ArrayList<String> getList() {
             ArrayList<String> list = new ArrayList<>();
-            for (ShoppingItem item : items) {
-                list.add(item.getItemName());
+            for ( ShoppingItem item : items) {
+                list.add( item.getItemName() );
             }
             return list;
         }
