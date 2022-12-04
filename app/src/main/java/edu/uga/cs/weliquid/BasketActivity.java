@@ -32,7 +32,6 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Iterator;
 import java.util.List;
 
 import edu.uga.cs.weliquid.R.id;
@@ -216,7 +215,7 @@ public class BasketActivity extends AppCompatActivity
         private List<String> basketKeyList;
         private Context context;
         int numChecks = 0;
-        boolean isSelectAll = false;
+        boolean selectAll = false;
 
         public BasketRecyclerAdapter( ShopBasket shopBasket, Context context ) {
             this.basket = shopBasket;
@@ -258,10 +257,14 @@ public class BasketActivity extends AppCompatActivity
             holder.rmName.setText( item.getRmName() );
             holder.itemTime.setText( item.getItemTime() );
 
-            if (isSelectAll) {
+            if (selectAll) {
                 holder.checkBox.setChecked(true);
                 numChecks++;
                 basketKeyList.add(basketKey);
+            }
+
+            if (numChecks == 0) {
+                holder.checkBox.setChecked(false);
             }
 
             holder.checkBox.setOnClickListener(new View.OnClickListener() {
@@ -297,14 +300,14 @@ public class BasketActivity extends AppCompatActivity
         }
 
         public void setSelectAll() {
-            isSelectAll = true;
+            selectAll = true;
             numChecks = getItemCount();
             setRemoveButton();
             notifyDataSetChanged();
         }
 
         public void setUnselectAll() {
-            isSelectAll = false;
+            selectAll = false;
             numChecks = 0;
             setPurchaseButton();
             notifyDataSetChanged();
