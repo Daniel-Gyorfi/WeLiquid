@@ -31,6 +31,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import edu.uga.cs.weliquid.R.id;
 
@@ -122,9 +123,8 @@ public class BasketActivity extends AppCompatActivity {
                                             Toast.LENGTH_SHORT).show();
                                 }
                             });
-
                     ShopBasket.getInstance().removeFromShoppingList(getApplicationContext());
-                } else { // Remove items
+                } else if (buttonChoice == 3){
                     itemsRemoved();
                 }
             }
@@ -205,14 +205,14 @@ public class BasketActivity extends AppCompatActivity {
         public static final String DEBUG_TAG = "ShopItemRecyclerAdapter";
 
         private ShopBasket basket;
+        private List<String> basketKeyList;
         private Context context;
         int numChecks = 0;
         boolean isSelectAll = false;
-        boolean addPurchased = false;
-        boolean isRemoved = false;
 
         public BasketRecyclerAdapter( ShopBasket shopBasket, Context context ) {
             this.basket = shopBasket;
+            this.basketKeyList = new ArrayList<String>();
             this.context = context;
         }
 
@@ -242,6 +242,7 @@ public class BasketActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull BasketRecyclerAdapter.BasketItemHolder holder, int position) {
             ShoppingItem item = basket.items.get( position );
+            String basketKey = item.getKey();
 
             Log.d( DEBUG_TAG, "onBindViewHolder: " + item );
 
@@ -249,28 +250,16 @@ public class BasketActivity extends AppCompatActivity {
             holder.rmName.setText( item.getRmName() );
             holder.itemTime.setText( item.getItemTime() );
 
-            if (isRemoved) {
-                if (holder.checkBox.isChecked()) {
-                    Toast.makeText(getApplicationContext(), "Item(s) removed from basket",
-                            Toast.LENGTH_SHORT).show();
-                }
-//                MenuItem selectionItem = basketMenu.findItem(R.id.selectBtn);
-//                if (getItemCount() == 0) {
-//                    selectionItem.setVisible(false);
-//                    invalidateOptionsMenu();
-//                }
-            } else {
-                holder.checkBox.setChecked(isSelectAll);
-            }
-
             holder.checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (holder.checkBox.isChecked()) {
                         numChecks++;
+                        basketKeyList.add(basketKey);
                         Log.d(DEBUG_TAG, "num of selected checkbox: " + numChecks);
                     } else {
                         numChecks--;
+                        basketKeyList.remove(basketKey);
                         Log.d(DEBUG_TAG, "num of selected checkbox: " + numChecks);
                     }
                     if (numChecks > 0) {
@@ -309,7 +298,14 @@ public class BasketActivity extends AppCompatActivity {
 
         public void removeItems() {
             Log.d(DEBUG_TAG, "removeItems() is called");
-            isRemoved = true;
+            for (String key : basketKeyList) {
+                for (ShoppingItem item : basket.items) {
+                    if (key.equals(item.getKey())) {
+                        ShopBasket.getInstance().remove(item);
+                    }
+                }
+            }
+            basketKeyList.clear();
             selectTitle();
             setPurchaseButton();
             notifyDataSetChanged();
