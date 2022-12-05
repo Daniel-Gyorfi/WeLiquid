@@ -179,32 +179,32 @@ public class BasketActivity extends AppCompatActivity
         String date = dateFormat.format(calendar.getTime());
 
         String price = "$" + value.toString();
-
         PurchaseBasketItem basket = new PurchaseBasketItem(items, price, rmName, date);
 
         DatabaseReference fire = FirebaseDatabase.getInstance()
                 .getReference("purchaseItems");
+
         fire.push().setValue(basket)
-                .addOnSuccessListener( new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d( DEBUG_TAG, "Purchase list item saved: " + basket );
-                        ShopBasket.getInstance().clear();
-                        // Show a quick confirmation
-                        Toast.makeText(getApplicationContext(), "Basket added to purchase list",
-                                Toast.LENGTH_SHORT).show();
-                        Intent viewPurchase = new Intent(getApplicationContext(), PurchasedListActivity.class);
-                        viewPurchase.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        getApplicationContext().startActivity(viewPurchase);
-                    }
-                })
-                .addOnFailureListener( new OnFailureListener() {
-                    @Override
-                    public void onFailure( @NonNull Exception e ) {
-                        Toast.makeText(getApplicationContext(), "Failed to add basket to purchase list",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
+            .addOnSuccessListener( new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d( DEBUG_TAG, "Purchase list item saved: " + basket );
+                    ShopBasket.getInstance().clear();
+                    // Show a quick confirmation
+                    Toast.makeText(getApplicationContext(), "Basket added to purchase list",
+                            Toast.LENGTH_SHORT).show();
+                    Intent viewPurchase = new Intent(getApplicationContext(), PurchasedListActivity.class);
+                    viewPurchase.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    getApplicationContext().startActivity(viewPurchase);
+                }
+            })
+            .addOnFailureListener( new OnFailureListener() {
+                @Override
+                public void onFailure( @NonNull Exception e ) {
+                    Toast.makeText(getApplicationContext(), "Failed to add basket to purchase list",
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
         ShopBasket.getInstance().removeFromShoppingList(getApplicationContext());
     }
 

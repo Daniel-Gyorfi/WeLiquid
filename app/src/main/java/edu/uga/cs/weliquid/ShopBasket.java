@@ -80,7 +80,7 @@ public class ShopBasket {
             for (ShoppingItem item : items) {
                 DatabaseReference ref = fire.child( item.getKey() );
 
-                // This listener will be invoked asynchronously, hence no need for an AsyncTask class.
+                // asynchronously delete item
                 ref.addListenerForSingleValueEvent( new ValueEventListener() {
                     @Override
                     public void onDataChange( @NonNull DataSnapshot dataSnapshot ) {
