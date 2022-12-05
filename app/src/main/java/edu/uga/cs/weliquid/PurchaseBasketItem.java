@@ -3,8 +3,10 @@ package edu.uga.cs.weliquid;
 import java.util.ArrayList;
 
 /**
- * A single item in the shopping list, including the
- * name of the item and the roommate who added the item to the list
+ * A single basket item in the recently purchased list,
+ * including all the items in the basket, the total cost
+ * of these items, the time at which they were purchased,
+ * and the person who purchased them
  */
 public class PurchaseBasketItem {
     private String key;

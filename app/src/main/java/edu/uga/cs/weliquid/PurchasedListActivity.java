@@ -33,8 +33,8 @@ public class PurchasedListActivity extends AppCompatActivity {
     public static final String DEBUG_TAG = "ShoppingListActivity";
 
     private RecyclerView recyclerView;
-    private PurchaseItemRecyclerAdapter recyclerAdapter;
-    private List<PurchaseBasketItem> purchaseItemsList;
+    private PurchaseBasketItemRecyclerAdapter recyclerAdapter;
+    private List<PurchaseBasketItem> purchaseBasketItemsList;
     private FirebaseDatabase database;
 
     @Override
@@ -51,14 +51,14 @@ public class PurchasedListActivity extends AppCompatActivity {
         recyclerView = findViewById( R.id.recyclePurchase );
 
         // initialize the shopping list
-        purchaseItemsList = new ArrayList<PurchaseBasketItem>();
+        purchaseBasketItemsList = new ArrayList<PurchaseBasketItem>();
 
         // use a linear layout manager for the recycler view
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
         // the recycler adapter with shopping list items is empty at first; it will be updated later
-        recyclerAdapter = new PurchaseItemRecyclerAdapter( purchaseItemsList, PurchasedListActivity.this );
+        recyclerAdapter = new PurchaseBasketItemRecyclerAdapter( purchaseBasketItemsList, PurchasedListActivity.this );
         recyclerView.setAdapter( recyclerAdapter );
 
         // get a Firebase DB instance reference
@@ -75,11 +75,11 @@ public class PurchasedListActivity extends AppCompatActivity {
             @Override
             public void onDataChange( @NonNull DataSnapshot snapshot ) {
                 // Once we have a DataSnapshot object, we need to iterate over the elements and place them on our shopping list.
-                purchaseItemsList.clear(); // clear the current content; this is inefficient!
+                purchaseBasketItemsList.clear(); // clear the current content; this is inefficient!
                 for( DataSnapshot postSnapshot: snapshot.getChildren() ) {
                     PurchaseBasketItem shopItem = postSnapshot.getValue(PurchaseBasketItem.class);
                     shopItem.setKey( postSnapshot.getKey() );
-                    purchaseItemsList.add( shopItem );
+                    purchaseBasketItemsList.add( shopItem );
                     Log.d( DEBUG_TAG, "ValueEventListener: added: " + shopItem );
                     Log.d( DEBUG_TAG, "ValueEventListener: key: " + postSnapshot.getKey() );
                 }
@@ -117,20 +117,20 @@ public class PurchasedListActivity extends AppCompatActivity {
     /**
      * This is an adapter class for the RecyclerView to show all shopping list items.
      */
-    private class PurchaseItemRecyclerAdapter extends RecyclerView.Adapter<PurchaseItemRecyclerAdapter.PurchaseItemHolder> {
+    private class PurchaseBasketItemRecyclerAdapter extends RecyclerView.Adapter<PurchaseBasketItemRecyclerAdapter.PurchaseBasketItemHolder> {
         public static final String DEBUG_TAG = "ShopItemRecyclerAdapter";
 
         private List<PurchaseBasketItem> purchaseList;
 
         private Context context;
 
-        public PurchaseItemRecyclerAdapter(List<PurchaseBasketItem> boughtList, Context context) {
+        public PurchaseBasketItemRecyclerAdapter(List<PurchaseBasketItem> boughtList, Context context) {
             this.purchaseList = boughtList;
             this.context = context;
         }
 
         // The adapter must have a ViewHolder class to "hold" one item to show.
-        public class PurchaseItemHolder extends RecyclerView.ViewHolder {
+        public class PurchaseBasketItemHolder extends RecyclerView.ViewHolder {
 
             int position = -1;
             TextView itemName;
@@ -139,7 +139,7 @@ public class PurchasedListActivity extends AppCompatActivity {
             TextView itemTime;
             CheckBox box;
 
-            public PurchaseItemHolder(View itemView) {
+            public PurchaseBasketItemHolder(View itemView) {
                 super(itemView);
 
                 itemName = itemView.findViewById(R.id.itemName);
@@ -152,14 +152,14 @@ public class PurchasedListActivity extends AppCompatActivity {
 
         @NonNull
         @Override
-        public PurchaseItemRecyclerAdapter.PurchaseItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public PurchaseBasketItemRecyclerAdapter.PurchaseBasketItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.purchase_basket_item, parent, false);
-            return new PurchaseItemRecyclerAdapter.PurchaseItemHolder(view);
+            return new PurchaseBasketItemRecyclerAdapter.PurchaseBasketItemHolder(view);
         }
 
         // This method fills in the values of the Views to show a ShoppingItem
         @Override
-        public void onBindViewHolder(PurchaseItemRecyclerAdapter.PurchaseItemHolder holder, @SuppressLint("RecyclerView") int position) {
+        public void onBindViewHolder(PurchaseBasketItemRecyclerAdapter.PurchaseBasketItemHolder holder, @SuppressLint("RecyclerView") int position) {
             PurchaseBasketItem purchaseItem = purchaseList.get(position);
 
             Log.d(DEBUG_TAG, "Bind: " + position);

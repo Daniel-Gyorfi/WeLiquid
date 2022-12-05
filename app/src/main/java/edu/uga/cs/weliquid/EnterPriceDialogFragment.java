@@ -50,7 +50,7 @@ public class EnterPriceDialogFragment extends DialogFragment {
         builder.setView( layout );
 
         // Set the title of the AlertDialog
-        builder.setTitle( "New Item" );
+        builder.setTitle( "Enter Price" );
         // Provide the negative button listener
         builder.setNegativeButton( android.R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
