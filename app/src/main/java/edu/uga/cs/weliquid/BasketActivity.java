@@ -25,8 +25,12 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -206,6 +210,33 @@ public class BasketActivity extends AppCompatActivity
                             Toast.LENGTH_SHORT).show();
                 }
             });
+
+        final DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
+        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+
+        // begin to track money spent by user, initializing entry if needed
+        Query emailLogged = dbRef.child("userList")
+                .orderByChild("name").equalTo(email);
+        emailLogged.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                UserEntry thisUser = null;
+                String userId = "";
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    thisUser = data.getValue(UserEntry.class);
+                    userId = data.getKey();
+                    break;
+                }
+                thisUser.increment(value);
+                dbRef.child("userList").child(userId).setValue(thisUser);
+                Log.d(DEBUG_TAG, "updated user spending");
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(DEBUG_TAG, "couldn't get user info");
+            }
+        });
+
         ShopBasket.getInstance().removeFromShoppingList(getApplicationContext());
     }
 
