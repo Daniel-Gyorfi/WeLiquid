@@ -13,9 +13,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * This is the screen users are taken to when they log in
@@ -65,6 +74,29 @@ public class ItemManagementActivity extends AppCompatActivity {
                 }
             }
         });
+
+        final DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
+        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+
+        // begin to track money spent by user, initializing entry if needed
+        Query emailLogged = dbRef.child("userList")
+                .orderByChild("name").equalTo(email);
+        emailLogged.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(!dataSnapshot.exists()){
+                    String userId = dbRef.child("userList").push().getKey();
+                    UserEntry thisUser = new UserEntry(email, 0.0f);
+                    dbRef.child("userList").child(userId).setValue(thisUser);
+                    Log.d(DEBUG_TAG, "added user entry");
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(DEBUG_TAG, "couldn't check for user money");
+            }
+        });
+
     }
 
     @Override
