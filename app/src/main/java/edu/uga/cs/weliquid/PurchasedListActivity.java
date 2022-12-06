@@ -175,28 +175,6 @@ public class PurchasedListActivity extends AppCompatActivity {
             holder.purchaseItemRecyclerAdapter.setPosition(holder.getAdapterPosition());
             holder.listItems.setAdapter(holder.purchaseItemRecyclerAdapter);
 
-            // Create a layout manager to assign a layout to the RecyclerView.
-            // Here we have assigned the layout as LinearLayout with vertical orientation.
-//            LinearLayoutManager layoutManager = new LinearLayoutManager(
-//                    holder.listItems.getContext(),
-//                    LinearLayoutManager.VERTICAL,
-//                    false
-//            );
-
-            // Since this is a nested layout, so to define how many child items should be prefetched when the
-            // child RecyclerView is nested inside the parent RecyclerView, we use the following method:
-//            layoutManager.setInitialPrefetchItemCount(
-//                    purchaseItem.getItemList().size()
-//            );
-
-            // Create an instance of the child
-            // item view adapter and set its
-            // adapter, layout manager and RecyclerViewPool
-//            PurchaseItemRecyclerAdapter purchaseItemRA = new PurchaseItemRecyclerAdapter(purchaseItem.getItemList());
-//            holder.listItems.setLayoutManager(layoutManager);
-//            holder.listItems.setAdapter(purchaseItemRA);
-//            holder.listItems.setRecycledViewPool(viewPool);
-
             holder.position = position;
             holder.price.setText(purchaseItem.getCost());
             holder.rmName.setText(purchaseItem.getRmName());
@@ -215,12 +193,6 @@ public class PurchasedListActivity extends AppCompatActivity {
                 }
             });
 
-//            holder.box.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//
-//                }
-//            });
         }
 
         @Override

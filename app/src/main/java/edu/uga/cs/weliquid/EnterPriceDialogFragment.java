@@ -71,7 +71,7 @@ public class EnterPriceDialogFragment extends DialogFragment {
         public void onClick(DialogInterface dialog, int which) {
             // get the price from the user
             String itemPrice = itemPriceView.getText().toString();
-            BigDecimal actualPrice = BigDecimal.valueOf(Double.valueOf(itemPrice));
+            BigDecimal actualPrice = new BigDecimal(itemPrice);
 
             // get the Activity's listener to add the new shopping list item
             EnterPriceDialogListener listener = (EnterPriceDialogListener) getActivity();

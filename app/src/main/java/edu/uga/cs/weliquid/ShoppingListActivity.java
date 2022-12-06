@@ -123,6 +123,32 @@ public class ShoppingListActivity
     }
 
     @Override
+    protected void onSaveInstanceState (Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("numChecks", recyclerAdapter.numChecks);
+        outState.putStringArrayList("selected", recyclerAdapter.getTemp());
+    }
+
+    @Override
+    protected void onRestoreInstanceState (Bundle inState) {
+        super.onRestoreInstanceState(inState);
+        int numChecks = inState.getInt("numChecks", 0);
+        if (numChecks > 0) {
+            setBasketButton();
+            setUnselectTitle();
+        }
+        recyclerAdapter.numChecks = numChecks;
+        recyclerAdapter.setTemp(inState.getStringArrayList("selected"));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.shopping_list_menu, menu);
