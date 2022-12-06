@@ -168,7 +168,7 @@ public class BasketActivity extends AppCompatActivity
 
     }
 
-    public void enterItemPrice(BigDecimal value) {
+    public void enterItemPrice(float value) {
         List<PurchaseItem> items = ShopBasket.getInstance().getList();
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -178,7 +178,7 @@ public class BasketActivity extends AppCompatActivity
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy HH:mm:ss z");
         String date = dateFormat.format(calendar.getTime());
 
-        String price = "$" + value.toString();
+        String price = "$" + value;
 
         PurchaseBasket basket = new PurchaseBasket(items, price, rmName, date);
 
