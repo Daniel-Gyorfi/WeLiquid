@@ -30,7 +30,7 @@ public class EnterPriceDialogFragment extends DialogFragment {
     // A class implementing this interface will handle the new shopping list item, i.e. store it
     // in Firebase and add it to the RecyclerAdapter.
     public interface EnterPriceDialogListener {
-        void enterItemPrice(BigDecimal value);
+        void enterItemPrice(float value);
     }
 
     @NonNull
@@ -71,7 +71,7 @@ public class EnterPriceDialogFragment extends DialogFragment {
         public void onClick(DialogInterface dialog, int which) {
             // get the price from the user
             String itemPrice = itemPriceView.getText().toString();
-            BigDecimal actualPrice = new BigDecimal(itemPrice);
+            float actualPrice = Float.valueOf(itemPrice);
 
             // get the Activity's listener to add the new shopping list item
             EnterPriceDialogListener listener = (EnterPriceDialogListener) getActivity();
