@@ -61,6 +61,19 @@ public class PurchaseItemRecyclerAdapter extends RecyclerView.Adapter<PurchaseIt
 
         holder.position = position;
         holder.itemName.setText( itemName );
+
+        holder.deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (position < getItemCount()) {
+                    purchaseItemsList.remove(position);
+                    notifyItemRemoved(position);
+                } else {
+                    purchaseItemsList.remove(0);
+                    notifyItemRemoved(0);
+                }
+            }
+        });
     }
 
     @Override
