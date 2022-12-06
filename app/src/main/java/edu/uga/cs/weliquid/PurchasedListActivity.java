@@ -33,7 +33,7 @@ public class PurchasedListActivity extends AppCompatActivity {
     public static final String DEBUG_TAG = "ShoppingListActivity";
 
     private RecyclerView recyclerView;
-    private PurchaseBasketItemRecyclerAdapter recyclerAdapter;
+    private PurchaseBasketRecyclerAdapter recyclerAdapter;
     private List<PurchaseBasket> purchaseBasketItemsList;
     private FirebaseDatabase database;
 
@@ -58,7 +58,7 @@ public class PurchasedListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         // the recycler adapter with shopping list items is empty at first; it will be updated later
-        recyclerAdapter = new PurchaseBasketItemRecyclerAdapter( purchaseBasketItemsList, PurchasedListActivity.this );
+        recyclerAdapter = new PurchaseBasketRecyclerAdapter( purchaseBasketItemsList, PurchasedListActivity.this );
         recyclerView.setAdapter( recyclerAdapter );
 
         // get a Firebase DB instance reference
@@ -117,14 +117,14 @@ public class PurchasedListActivity extends AppCompatActivity {
     /**
      * This is an adapter class for the RecyclerView to show all shopping list items.
      */
-    private class PurchaseBasketItemRecyclerAdapter extends RecyclerView.Adapter<PurchaseBasketItemRecyclerAdapter.PurchaseBasketItemHolder> {
+    private class PurchaseBasketRecyclerAdapter extends RecyclerView.Adapter<PurchaseBasketRecyclerAdapter.PurchaseBasketItemHolder> {
         public static final String DEBUG_TAG = "ShopItemRecyclerAdapter";
-        private RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
+//        private RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
         private List<PurchaseBasket> purchaseList;
 
         private Context context;
 
-        public PurchaseBasketItemRecyclerAdapter(List<PurchaseBasket> boughtList, Context context) {
+        public PurchaseBasketRecyclerAdapter(List<PurchaseBasket> boughtList, Context context) {
             this.purchaseList = boughtList;
             this.context = context;
         }
@@ -134,6 +134,7 @@ public class PurchasedListActivity extends AppCompatActivity {
 
             int position = -1;
             RecyclerView listItems;
+            PurchaseItemRecyclerAdapter purchaseItemRecyclerAdapter;
             TextView price;
             TextView rmName;
             TextView itemTime;
@@ -152,41 +153,49 @@ public class PurchasedListActivity extends AppCompatActivity {
 
         @NonNull
         @Override
-        public PurchaseBasketItemRecyclerAdapter.PurchaseBasketItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public PurchaseBasketRecyclerAdapter.PurchaseBasketItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.purchase_basket, parent, false);
-            return new PurchaseBasketItemRecyclerAdapter.PurchaseBasketItemHolder(view);
+            return new PurchaseBasketRecyclerAdapter.PurchaseBasketItemHolder(view);
         }
 
         // This method fills in the values of the Views to show a ShoppingItem
         @Override
-        public void onBindViewHolder(PurchaseBasketItemRecyclerAdapter.PurchaseBasketItemHolder holder, @SuppressLint("RecyclerView") int position) {
+        public void onBindViewHolder(PurchaseBasketRecyclerAdapter.PurchaseBasketItemHolder holder, @SuppressLint("RecyclerView") int position) {
             PurchaseBasket purchaseItem = purchaseList.get(position);
 
             Log.d(DEBUG_TAG, "Bind: " + position);
 
             String key = purchaseItem.getKey();
 
+            List<PurchaseItem> purchased = purchaseItem.getItemList();
+            LinearLayoutManager layoutManager = new LinearLayoutManager(holder.itemView.getContext());
+            holder.listItems.setLayoutManager(layoutManager);
+            holder.purchaseItemRecyclerAdapter = new PurchaseItemRecyclerAdapter(purchased, holder.itemView.getContext());
+            holder.purchaseItemRecyclerAdapter.setKey(purchaseList.get(holder.getAdapterPosition()).getKey());
+            holder.purchaseItemRecyclerAdapter.setPosition(holder.getAdapterPosition());
+            holder.listItems.setAdapter(holder.purchaseItemRecyclerAdapter);
+
             // Create a layout manager to assign a layout to the RecyclerView.
             // Here we have assigned the layout as LinearLayout with vertical orientation.
-            LinearLayoutManager layoutManager = new LinearLayoutManager(
-                    holder.listItems.getContext(),
-                    LinearLayoutManager.VERTICAL,
-                    false
-            );
+//            LinearLayoutManager layoutManager = new LinearLayoutManager(
+//                    holder.listItems.getContext(),
+//                    LinearLayoutManager.VERTICAL,
+//                    false
+//            );
 
             // Since this is a nested layout, so to define how many child items should be prefetched when the
             // child RecyclerView is nested inside the parent RecyclerView, we use the following method:
-            layoutManager.setInitialPrefetchItemCount(
-                    purchaseItem.getItemList().size()
-            );
+//            layoutManager.setInitialPrefetchItemCount(
+//                    purchaseItem.getItemList().size()
+//            );
 
             // Create an instance of the child
             // item view adapter and set its
             // adapter, layout manager and RecyclerViewPool
-            PurchaseItemRecyclerAdapter purchaseItemRA = new PurchaseItemRecyclerAdapter(purchaseItem.getItemList());
-            holder.listItems.setLayoutManager(layoutManager);
-            holder.listItems.setAdapter(purchaseItemRA);
-            holder.listItems.setRecycledViewPool(viewPool);
+//            PurchaseItemRecyclerAdapter purchaseItemRA = new PurchaseItemRecyclerAdapter(purchaseItem.getItemList());
+//            holder.listItems.setLayoutManager(layoutManager);
+//            holder.listItems.setAdapter(purchaseItemRA);
+//            holder.listItems.setRecycledViewPool(viewPool);
 
             holder.position = position;
             holder.price.setText(purchaseItem.getCost());
@@ -206,12 +215,12 @@ public class PurchasedListActivity extends AppCompatActivity {
                 }
             });
 
-            holder.box.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
+//            holder.box.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//
+//                }
+//            });
         }
 
         @Override
