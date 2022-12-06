@@ -1,6 +1,7 @@
 package edu.uga.cs.weliquid;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +11,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PurchaseItemRecyclerAdapter extends RecyclerView.Adapter<PurchaseItemRecyclerAdapter.PurchaseItemHolder> {
-    public static final String DEBUG_TAG = "PurchaseItemRecyclerAdapter";
+    public static final String DEBUG_TAG = "PurchaseItemRA";
     private List<PurchaseItem> purchaseItemsList;
 
     public PurchaseItemRecyclerAdapter(List<PurchaseItem> boughtItemsList) {
@@ -42,7 +44,15 @@ public class PurchaseItemRecyclerAdapter extends RecyclerView.Adapter<PurchaseIt
 
     @Override
     public void onBindViewHolder(PurchaseItemHolder holder, @SuppressLint("RecyclerView") int position ) {
-        // currently working on this
+        PurchaseItem purchaseItem = purchaseItemsList.get(position);
+
+        Log.d(DEBUG_TAG, "Bind: " + position);
+
+        String key = purchaseItem.getItemKey();
+        String itemName = purchaseItem.getPurchaseItemName();
+
+        holder.position = position;
+        holder.itemName.setText(purchaseItem.getPurchaseItemName());
     }
 
     @Override

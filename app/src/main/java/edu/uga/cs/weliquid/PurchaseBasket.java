@@ -1,6 +1,6 @@
 package edu.uga.cs.weliquid;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A single basket item in the recently purchased list,
@@ -8,14 +8,14 @@ import java.util.ArrayList;
  * of these items, the time at which they were purchased,
  * and the person who purchased them
  */
-public class PurchaseBasketItem {
+public class PurchaseBasket {
     private String key;
-    private ArrayList<String> itemList;
+    private List<PurchaseItem> itemList;
     private String rmName;
     private String itemTime;
     private String cost;
 
-    public PurchaseBasketItem() {
+    public PurchaseBasket() {
         this.key = null;
         this.itemList = null;
         this.rmName = null;
@@ -23,11 +23,11 @@ public class PurchaseBasketItem {
         this.cost = null;
     }
 
-    public PurchaseBasketItem(ArrayList<String> items) {
+    public PurchaseBasket(List<PurchaseItem> items) {
         this.itemList = items;
     }
 
-    public PurchaseBasketItem(ArrayList<String> items, String price, String rmName, String itemTime) {
+    public PurchaseBasket(List<PurchaseItem> items, String price, String rmName, String itemTime) {
         this.itemList = items;
         this.cost = price;
         this.rmName = rmName;
@@ -42,9 +42,9 @@ public class PurchaseBasketItem {
         this.key = key;
     }
 
-    public ArrayList<String> getItemList() { return itemList; }
+    public List<PurchaseItem> getItemList() { return itemList; }
 
-    public void setItemList(ArrayList<String> items) { this.itemList = items; }
+    public void setItemList(List<PurchaseItem> items) { this.itemList = items; }
 
     public String getRmName() { return rmName; }
 
@@ -53,16 +53,6 @@ public class PurchaseBasketItem {
     public String getItemTime() { return itemTime; }
 
     public void setItemTime(String itemTime) { this.itemTime = itemTime; }
-
-    public String toItemString() {
-        String output = "";
-        for (String item : itemList) {
-            output += item + " ";
-        }
-        output = output.trim();
-        output = output.replace(" ", "\n");
-        return output;
-    }
 
     public String getCost() {
         return cost;

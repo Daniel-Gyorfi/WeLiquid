@@ -16,14 +16,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ShopBasket {
     private static final String DEBUG_TAG = "ShopBasket";
     ArrayList<ShoppingItem> items;
+    List<PurchaseItem> purchaseItems;
     static ShopBasket instance;
 
         private ShopBasket() {
             items = new ArrayList<ShoppingItem>();
+            purchaseItems = new ArrayList<PurchaseItem>();
         }
 
         public static ShopBasket getInstance() {
@@ -65,12 +68,15 @@ public class ShopBasket {
             return items.isEmpty();
         }
 
-        public ArrayList<String> getList() {
+        public List<PurchaseItem> getList() {
             ArrayList<String> list = new ArrayList<>();
             for ( ShoppingItem item : items) {
                 list.add( item.getItemName() );
             }
-            return list;
+            for ( String nameItem : list) {
+                purchaseItems.add(new PurchaseItem(nameItem));
+            }
+            return purchaseItems;
         }
 
         public void removeFromShoppingList(Context context) {

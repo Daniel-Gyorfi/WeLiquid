@@ -169,7 +169,7 @@ public class BasketActivity extends AppCompatActivity
     }
 
     public void enterItemPrice(BigDecimal value) {
-        ArrayList<String> items = ShopBasket.getInstance().getList();
+        List<PurchaseItem> items = ShopBasket.getInstance().getList();
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String rmName = user.getEmail();
@@ -180,7 +180,7 @@ public class BasketActivity extends AppCompatActivity
 
         String price = "$" + value.toString();
 
-        PurchaseBasketItem basket = new PurchaseBasketItem(items, price, rmName, date);
+        PurchaseBasket basket = new PurchaseBasket(items, price, rmName, date);
 
         DatabaseReference fire = FirebaseDatabase.getInstance()
                 .getReference("purchaseItems");
