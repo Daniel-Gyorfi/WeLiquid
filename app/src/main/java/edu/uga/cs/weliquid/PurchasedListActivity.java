@@ -30,7 +30,7 @@ import java.util.List;
 
 public class PurchasedListActivity extends AppCompatActivity {
 
-    public static final String DEBUG_TAG = "ShoppingListActivity";
+    public static final String DEBUG_TAG = "PurchaseListActivity";
 
     private RecyclerView recyclerView;
     private PurchaseBasketRecyclerAdapter recyclerAdapter;
@@ -118,10 +118,9 @@ public class PurchasedListActivity extends AppCompatActivity {
      * This is an adapter class for the RecyclerView to show all shopping list items.
      */
     private class PurchaseBasketRecyclerAdapter extends RecyclerView.Adapter<PurchaseBasketRecyclerAdapter.PurchaseBasketItemHolder> {
-        public static final String DEBUG_TAG = "ShopItemRecyclerAdapter";
+        public static final String DEBUG_TAG = "PurchaseRecyclerAdapter";
 //        private RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
         private List<PurchaseBasket> purchaseList;
-
         private Context context;
 
         public PurchaseBasketRecyclerAdapter(List<PurchaseBasket> boughtList, Context context) {
@@ -133,8 +132,9 @@ public class PurchasedListActivity extends AppCompatActivity {
         public class PurchaseBasketItemHolder extends RecyclerView.ViewHolder {
 
             int position = -1;
+//            PurchaseBasket basket;
             RecyclerView listItems;
-            PurchaseItemRecyclerAdapter purchaseItemRecyclerAdapter;
+            PurchaseItemRecyclerAdapter adapter;
             TextView price;
             TextView rmName;
             TextView itemTime;
@@ -170,28 +170,15 @@ public class PurchasedListActivity extends AppCompatActivity {
             List<PurchaseItem> purchased = purchaseItem.getItemList();
             LinearLayoutManager layoutManager = new LinearLayoutManager(holder.itemView.getContext());
             holder.listItems.setLayoutManager(layoutManager);
-            holder.purchaseItemRecyclerAdapter = new PurchaseItemRecyclerAdapter(purchased, holder.itemView.getContext());
-            holder.purchaseItemRecyclerAdapter.setKey(purchaseList.get(holder.getAdapterPosition()).getKey());
-            holder.purchaseItemRecyclerAdapter.setPosition(holder.getAdapterPosition());
-            holder.listItems.setAdapter(holder.purchaseItemRecyclerAdapter);
+            holder.adapter = new PurchaseItemRecyclerAdapter(purchased, holder.itemView.getContext());
+//            holder.adapter.setKey(purchaseList.get(holder.getAdapterPosition()).getKey());
+//            holder.adapter.setPosition(holder.getAdapterPosition());
+            holder.listItems.setAdapter(holder.adapter);
 
             holder.position = position;
             holder.price.setText(purchaseItem.getCost());
             holder.rmName.setText(purchaseItem.getRmName());
             holder.itemTime.setText(purchaseItem.getItemTime());
-
-            // We can attach an OnClickListener to the itemView of the holder;
-            // itemView is a public field in the Holder class.
-            // It will be called when the user taps/clicks on the whole item, i.e., one of
-            // the shopping list items shown.
-            // This will indicate that the user wishes to edit (modify or delete) this item.
-            // We create and show an EditShoppingItemDialogFragment.
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
 
         }
 

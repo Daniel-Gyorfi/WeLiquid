@@ -59,8 +59,7 @@ public class PurchaseItemRecyclerAdapter extends RecyclerView.Adapter<PurchaseIt
         String key = purchaseItem.getItemKey();
         String itemName = purchaseItem.getPurchaseItemName();
 
-        holder.position = position;
-        holder.itemName.setText(purchaseItem.getPurchaseItemName());
+        holder.position = position;holder.itemName.setText( itemName );
     }
 
     @Override

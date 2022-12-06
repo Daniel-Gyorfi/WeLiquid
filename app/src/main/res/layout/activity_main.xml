@@ -14,7 +14,7 @@
         android:scaleY="2"
         app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias=".46"
+        app:layout_constraintHorizontal_bias=".48"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/we_liquid_launcher_foreground" />
