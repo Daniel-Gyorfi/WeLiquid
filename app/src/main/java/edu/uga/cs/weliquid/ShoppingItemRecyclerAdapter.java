@@ -155,11 +155,13 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
     public int getNumChecks() { return numChecks; }
 
     public void selectAll() {
-        selectAll = true;
-        numChecks = getItemCount();
-        ShoppingListActivity.setBasketButton();
-        ShoppingListActivity.setUnselectTitle();
-        notifyDataSetChanged();
+        if (getItemCount() > 0) {
+            selectAll = true;
+            numChecks = getItemCount();
+            ShoppingListActivity.setBasketButton();
+            ShoppingListActivity.setUnselectTitle();
+            notifyDataSetChanged();
+        }
     }
 
     public void unselectAll() {
