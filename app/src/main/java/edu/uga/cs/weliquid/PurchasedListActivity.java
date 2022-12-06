@@ -118,7 +118,7 @@ public class PurchasedListActivity extends AppCompatActivity {
      * This is an adapter class for the RecyclerView to show all shopping list items.
      */
     private class PurchaseBasketRecyclerAdapter extends RecyclerView.Adapter<PurchaseBasketRecyclerAdapter.PurchaseBasketItemHolder> {
-        public static final String DEBUG_TAG = "PurchaseRecyclerAdapter";
+        public static final String DEBUG_TAG = "PurchaseBasketRA";
 //        private RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
         private List<PurchaseBasket> purchaseList;
         private Context context;
@@ -163,7 +163,7 @@ public class PurchasedListActivity extends AppCompatActivity {
         public void onBindViewHolder(PurchaseBasketRecyclerAdapter.PurchaseBasketItemHolder holder, @SuppressLint("RecyclerView") int position) {
             PurchaseBasket purchaseItem = purchaseList.get(position);
 
-            Log.d(DEBUG_TAG, "Bind: " + position);
+            Log.d(DEBUG_TAG, "Bind Basket: " + position);
 
             String key = purchaseItem.getKey();
 
