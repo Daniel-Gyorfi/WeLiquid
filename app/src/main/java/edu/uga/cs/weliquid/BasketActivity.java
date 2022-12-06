@@ -172,7 +172,7 @@ public class BasketActivity extends AppCompatActivity
 
     }
 
-    public void enterItemPrice(float value) {
+    public void enterItemPrice(BigDecimal value) {
         List<PurchaseItem> items = ShopBasket.getInstance().getList();
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -228,6 +228,7 @@ public class BasketActivity extends AppCompatActivity
                     break;
                 }
                 thisUser.increment(value);
+                Log.d(DEBUG_TAG, "User: " + thisUser);
                 dbRef.child("userList").child(userId).setValue(thisUser);
                 Log.d(DEBUG_TAG, "updated user spending");
             }

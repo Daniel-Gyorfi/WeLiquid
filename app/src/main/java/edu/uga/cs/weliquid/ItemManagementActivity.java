@@ -26,6 +26,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.math.BigDecimal;
+
 /**
  * This is the screen users are taken to when they log in
  * Users can open the shopping list and purchased list screens from here
@@ -86,14 +88,14 @@ public class ItemManagementActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(!dataSnapshot.exists()){
                     String userId = dbRef.child("userList").push().getKey();
-                    UserEntry thisUser = new UserEntry(email, 0.0f);
+                    UserEntry thisUser = new UserEntry(email, "0");
                     dbRef.child("userList").child(userId).setValue(thisUser);
                     Log.d(DEBUG_TAG, "added user entry");
                 }
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.d(DEBUG_TAG, "couldn't check for user money");
+                Log.d(DEBUG_TAG, "couldn't check for user spending");
             }
         });
 
