@@ -71,7 +71,7 @@ public class SettleCostActivity extends AppCompatActivity {
                     totalCostNum += Double.parseDouble(user.getSpend());
                     results += user.getName() + ": " + user.getSpend() + "\n";
                 }
-                totalCostNum = (int) (totalCostNum / 100);
+                totalCostNum = (int) (totalCostNum * 100);
                 totalCostNum = totalCostNum / 100;
 
                 avgCostNum = totalCostNum / userCount;
