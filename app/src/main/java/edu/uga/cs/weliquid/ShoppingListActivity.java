@@ -38,7 +38,7 @@ public class ShoppingListActivity
     public static final String DEBUG_TAG = "ShoppingListActivity";
 
     private RecyclerView recyclerView;
-    private ShoppingItemRecyclerAdapter recyclerAdapter;
+    private static ShoppingItemRecyclerAdapter recyclerAdapter;
     private List<ShoppingItem> shoppingItemsList;
     private FirebaseDatabase database;
     public static FloatingActionButton floatingButton;
@@ -320,5 +320,9 @@ public class ShoppingListActivity
     public static void setSelectTitle() {
         MenuItem item = optionsMenu.findItem(R.id.select);
         item.setTitle("SELECT ALL");
+    }
+
+    public static void returnItem(ShoppingItem item) {
+        recyclerAdapter.addBackItem(item);
     }
 }

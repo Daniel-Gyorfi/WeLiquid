@@ -351,6 +351,7 @@ public class BasketActivity extends AppCompatActivity
 
             for (String key : basketKeyList) {
                 if (basket.containsKey(key)) {
+                    ShoppingListActivity.returnItem(basket.getFromKey(key));
                     basket.removeKey(key);
                     numChecks--;
                 }

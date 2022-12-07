@@ -53,6 +53,19 @@ public class ShopBasket {
             }
         }
 
+        public ShoppingItem getFromKey(String key) {
+            ShoppingItem query = null;
+            for ( ShoppingItem item : items ) {
+                if ( key.equals(item.getKey()) ) {
+                    query = item;
+                    // removing an item from the list will break the iterator
+                    // no need to iterate once the item has been removed
+                    break;
+                }
+            }
+            return query;
+        }
+
         public void clear() {
             this.items.clear();
         }

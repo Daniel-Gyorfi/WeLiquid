@@ -28,7 +28,7 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
     private Context context;
     int numChecks = 0;
     boolean selectAll = false;
-    boolean addBasket = false;
+//    boolean addBasket = false;
 
     public ShoppingItemRecyclerAdapter( List<ShoppingItem> shoppingList, Context context ) {
         this.shoppingList = shoppingList;
@@ -79,35 +79,20 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
         holder.rmName.setText( shoppingItem.getRmName() );
         holder.itemTime.setText( shoppingItem.getItemTime() );
 
-        if (!addBasket) {
-            if (!selectAll) {
-                if (selectedList.contains(key)) {
-                    // for when screen is rotated, reselecting items
-                    holder.box.setChecked(true);
-                } else {
-                    // if unselect btn is clicked and basket btn is not clicked yet
-                    holder.box.setChecked(false);
-                    // this method won't break if the item is not in the selected list
-                    selectedList.remove(key);
-                }
-            } else {
-                // if select all btn is clicked and basket btn is not clicked yet
+        if (!selectAll) {
+            if (selectedList.contains(key)) {
+                // for when screen is rotated, reselecting items
                 holder.box.setChecked(true);
-                addToTemp(key);
+            } else {
+                // if unselect btn is clicked and basket btn is not clicked yet
+                holder.box.setChecked(false);
+                // this method won't break if the item is not in the selected list
+                selectedList.remove(key);
             }
         } else {
-            if (!selectAll) {
-                // after basket btn is clicked, all checkboxes in shopping list are unchecked
-                holder.box.setChecked(false);
-            }
-        }
-
-        // this is what happens once the basket btn is clicked
-        if (addBasket && selectedList.contains(key)) {
-            Log.d(DEBUG_TAG, "contains: " + key);
-            ShopBasket.getInstance().add( shoppingItem );
-            selectedList.remove(key);
-            if (selectedList.isEmpty()) addBasket = false;
+            // if select all btn is clicked and basket btn is not clicked yet
+            holder.box.setChecked(true);
+            addToTemp(key);
         }
 
         // We can attach an OnClickListener to the itemView of the holder;
@@ -192,10 +177,21 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
         selectedList = selected;
     }
 
+    public void addBackItem(ShoppingItem item) {
+        shoppingList.add(item);
+    }
+
     public void addToBasket() {
-        addBasket = true;
+//        addBasket = true;
         selectAll = false;
         numChecks = 0;
+        ArrayList<ShoppingItem> temp = new ArrayList<>(shoppingList);
+        for (ShoppingItem item : temp) {
+            if (selectedList.contains(item.getKey())) {
+                ShopBasket.getInstance().add(item);
+                shoppingList.remove(item);
+            }
+        }
         ShoppingListActivity.setSelectTitle();
         ShoppingListActivity.setAddButton();
         notifyDataSetChanged();
