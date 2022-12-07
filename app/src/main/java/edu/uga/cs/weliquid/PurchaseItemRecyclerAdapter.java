@@ -8,13 +8,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 public class PurchaseItemRecyclerAdapter extends RecyclerView.Adapter<PurchaseItemRecyclerAdapter.PurchaseItemHolder> {
@@ -74,6 +80,7 @@ public class PurchaseItemRecyclerAdapter extends RecyclerView.Adapter<PurchaseIt
                         fire.child(String.valueOf(position)).removeValue();
                         purchaseItemsList.remove(position);
                         notifyItemRemoved(position);
+                        returnItem(purchaseItem.getPurchaseItemName());
                         if (purchaseItemsList.size() == 0) {
                             PurchasedListActivity.deleteBasket(key);
                         }
@@ -82,12 +89,42 @@ public class PurchaseItemRecyclerAdapter extends RecyclerView.Adapter<PurchaseIt
                         fire.child("0").removeValue();
                         purchaseItemsList.remove(0);
                         notifyItemRemoved(0);
+                        returnItem(purchaseItem.getPurchaseItemName());
                         Log.d(DEBUG_TAG, "removing last");
                         PurchasedListActivity.deleteBasket(key);
                     }
                 }
             });
         }
+    }
+
+    private void returnItem(String name) {
+        String user = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy HH:mm:ss z");
+        String date = dateFormat.format( calendar.getTime() );
+
+        ShoppingItem returnItem = new ShoppingItem(name, user, date);
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("shoppingItems");
+
+        myRef.push().setValue( returnItem )
+                .addOnSuccessListener( new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d( DEBUG_TAG, "ShoppingItem item saved: " + returnItem );
+                        // Show a quick confirmation
+
+                    }
+                })
+                .addOnFailureListener( new OnFailureListener() {
+                    @Override
+                    public void onFailure( @NonNull Exception e ) {
+                        Log.d( DEBUG_TAG, "ShoppingItem not retuned: " + returnItem );
+                    }
+                });
     }
 
     @Override
