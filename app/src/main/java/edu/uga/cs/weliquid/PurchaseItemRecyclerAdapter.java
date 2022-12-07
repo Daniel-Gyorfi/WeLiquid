@@ -57,8 +57,6 @@ public class PurchaseItemRecyclerAdapter extends RecyclerView.Adapter<PurchaseIt
     public void onBindViewHolder(PurchaseItemHolder holder, @SuppressLint("RecyclerView") int position ) {
 
         PurchaseItem purchaseItem = purchaseItemsList.get(position);
-
-        Log.d(DEBUG_TAG, "Bind: " + position);
         if (purchaseItem != null) {
             String key = purchaseItem.getItemKey();
             String itemName = purchaseItem.getPurchaseItemName();
@@ -76,13 +74,17 @@ public class PurchaseItemRecyclerAdapter extends RecyclerView.Adapter<PurchaseIt
                         fire.child(String.valueOf(position)).removeValue();
                         purchaseItemsList.remove(position);
                         notifyItemRemoved(position);
+                        if (purchaseItemsList.size() == 0) {
+                            PurchasedListActivity.deleteBasket(key);
+                        }
+                        Log.d(DEBUG_TAG, "delete item");
                     } else {
                         fire.child("0").removeValue();
                         purchaseItemsList.remove(0);
                         notifyItemRemoved(0);
+                        Log.d(DEBUG_TAG, "removing last");
+                        PurchasedListActivity.deleteBasket(key);
                     }
-
-
                 }
             });
         }

@@ -83,6 +83,10 @@ public class ShoppingListActivity
                     recyclerAdapter.addToBasket();
                     Toast.makeText(getApplicationContext(), "Item(s) added to basket",
                             Toast.LENGTH_SHORT).show();
+
+                    Intent basket = new Intent(getApplicationContext(), BasketActivity.class);
+                    basket.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    getApplicationContext().startActivity(basket);
                 }
             }
         });
@@ -106,11 +110,7 @@ public class ShoppingListActivity
                     ShoppingItem shopItem = postSnapshot.getValue(ShoppingItem.class);
                     shopItem.setKey( postSnapshot.getKey() );
                     shoppingItemsList.add( shopItem );
-                    Log.d( DEBUG_TAG, "ValueEventListener: added: " + shopItem );
-                    Log.d( DEBUG_TAG, "ValueEventListener: key: " + postSnapshot.getKey() );
                 }
-
-                Log.d( DEBUG_TAG, "ValueEventListener: notifying recyclerAdapter" );
                 // notifying the recycler that the set of data has changed
                 recyclerAdapter.notifyDataSetChanged();
             }
@@ -152,7 +152,7 @@ public class ShoppingListActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.shopping_list_menu, menu);
-        this.optionsMenu = menu;
+        optionsMenu = menu;
         return true;
     }
 

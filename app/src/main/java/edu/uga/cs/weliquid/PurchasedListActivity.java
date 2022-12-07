@@ -19,8 +19,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,7 +38,7 @@ public class PurchasedListActivity extends AppCompatActivity implements Serializ
 
     public static final String DEBUG_TAG = "PurchaseListActivity";
 
-    private RecyclerView recyclerView;
+    private static RecyclerView recyclerView;
     private PurchaseBasketRecyclerAdapter recyclerAdapter;
     private List<PurchaseBasket> purchaseBasketItemsList;
     private List<UserEntry> roommatesList;
@@ -90,8 +93,8 @@ public class PurchasedListActivity extends AppCompatActivity implements Serializ
                     PurchaseBasket shopItem = postSnapshot.getValue(PurchaseBasket.class);
                     shopItem.setKey( postSnapshot.getKey() );
                     purchaseBasketItemsList.add( shopItem );
-                    Log.d( DEBUG_TAG, "ValueEventListener: added: " + shopItem );
-                    Log.d( DEBUG_TAG, "ValueEventListener: key: " + postSnapshot.getKey() );
+//                    Log.d( DEBUG_TAG, "ValueEventListener: added: " + shopItem );
+//                    Log.d( DEBUG_TAG, "ValueEventListener: key: " + postSnapshot.getKey() );
                 }
 
                 Log.d( DEBUG_TAG, "ValueEventListener: notifying recyclerAdapter" );
@@ -132,6 +135,31 @@ public class PurchasedListActivity extends AppCompatActivity implements Serializ
         return super.onOptionsItemSelected(item);
     }
 
+    public static void deleteBasket(String key) {
+        Log.d(DEBUG_TAG, "deleteBasket");
+        DatabaseReference ref = FirebaseDatabase.getInstance()
+                .getReference("purchasedList")
+                .child(key);
+        ref.addListenerForSingleValueEvent( new ValueEventListener() {
+            @Override
+            public void onDataChange( @NonNull DataSnapshot dataSnapshot ) {
+                dataSnapshot.getRef().removeValue().addOnSuccessListener( new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d( DEBUG_TAG, "deleted basket at: " + key );                       }
+                });
+            }
+
+            @Override
+            public void onCancelled( @NonNull DatabaseError databaseError ) {
+                Log.d( DEBUG_TAG, "failed to delete shopping list item at: " + key );
+            }
+        });
+        PurchaseBasketRecyclerAdapter adapter =
+                (PurchaseBasketRecyclerAdapter) recyclerView.getAdapter();
+        adapter.removeKey(key);
+    }
+
     /**
      * This is an adapter class for the RecyclerView to show all shopping list items.
      */
@@ -140,6 +168,8 @@ public class PurchasedListActivity extends AppCompatActivity implements Serializ
 //        private RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
         private List<PurchaseBasket> purchaseList;
         private Context context;
+
+
 
         public PurchaseBasketRecyclerAdapter(List<PurchaseBasket> boughtList, Context context) {
             this.purchaseList = boughtList;
@@ -204,6 +234,16 @@ public class PurchasedListActivity extends AppCompatActivity implements Serializ
         public int getItemCount() {
 //            return purchaseList != null ? purchaseList.size() : 0;
             return purchaseList.size();
+        }
+
+        public void removeKey(String key) {
+            for (PurchaseBasket basket : purchaseList) {
+                if (basket.getKey().equals(key)) {
+                    purchaseList.remove(basket);
+                    break;
+                }
+            }
+            notifyDataSetChanged();
         }
     }
 }

@@ -17,7 +17,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -99,14 +101,7 @@ public class ItemManagementActivity extends AppCompatActivity {
             }
         });
 
-        // need to center logo differently in landscape
-//        int value = this.getResources().getConfiguration().orientation;
-//        if (value == Configuration.ORIENTATION_LANDSCAPE) {
-//            int wrap = ConstraintLayout.LayoutParams.WRAP_CONTENT;
-//            ConstraintLayout.LayoutParams lp = new ConstraintLayout.LayoutParams(wrap, wrap);
-//            lp.horizontalBias = 49;
-//            logo.setLayoutParams(lp);
-//        }
+
     }
 
     @Override
