@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,23 +20,27 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PurchasedListActivity extends AppCompatActivity {
+public class PurchasedListActivity extends AppCompatActivity implements Serializable {
 
     public static final String DEBUG_TAG = "PurchaseListActivity";
 
     private RecyclerView recyclerView;
     private PurchaseBasketRecyclerAdapter recyclerAdapter;
     private List<PurchaseBasket> purchaseBasketItemsList;
+    private List<UserEntry> roommatesList;
     private FirebaseDatabase database;
+    public static FloatingActionButton costButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +55,12 @@ public class PurchasedListActivity extends AppCompatActivity {
 
         recyclerView = findViewById( R.id.recyclePurchase );
 
+        costButton = findViewById(R.id.costButton);
+
         // initialize the shopping list
         purchaseBasketItemsList = new ArrayList<PurchaseBasket>();
+
+        roommatesList = new ArrayList<UserEntry>();
 
         // use a linear layout manager for the recycler view
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -94,6 +103,31 @@ public class PurchasedListActivity extends AppCompatActivity {
                 System.out.println( "ValueEventListener: reading failed: " + databaseError.getMessage() );
             }
         } );
+
+        costButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatabaseReference userRef = database.getReference("userList");
+                userRef.addValueEventListener( new ValueEventListener() {
+                    @Override
+                    public void onDataChange( @NonNull DataSnapshot snapshot ) {
+                        roommatesList.clear();
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            UserEntry roommate = dataSnapshot.getValue(UserEntry.class);
+                            roommatesList.add(roommate);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled( @NonNull DatabaseError error ) {
+                        System.out.println( "ValueEventListener: reading failed: " + error.getMessage() );
+                    }
+                });
+                Intent intent = new Intent(view.getContext(), SettleCostActivity.class);
+                intent.putExtra("roommatesList", (Serializable) roommatesList);
+                view.getContext().startActivity( intent );
+            }
+        });
     }
 
     @Override

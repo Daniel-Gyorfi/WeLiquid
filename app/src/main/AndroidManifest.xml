@@ -15,6 +15,13 @@
         android:theme="@style/Theme.WeLiquid"
         tools:targetApi="31">
         <activity
+            android:name=".SettleCostActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".BasketActivity"
             android:exported="false"
             android:parentActivityName=".ItemManagementActivity">
