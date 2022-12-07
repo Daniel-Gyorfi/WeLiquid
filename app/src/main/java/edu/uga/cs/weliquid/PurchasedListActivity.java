@@ -184,6 +184,7 @@ public class PurchasedListActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
+//            return purchaseList != null ? purchaseList.size() : 0;
             return purchaseList.size();
         }
     }

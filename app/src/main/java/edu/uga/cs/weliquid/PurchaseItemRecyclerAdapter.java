@@ -12,6 +12,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.List;
 
 public class PurchaseItemRecyclerAdapter extends RecyclerView.Adapter<PurchaseItemRecyclerAdapter.PurchaseItemHolder> {
@@ -52,32 +55,41 @@ public class PurchaseItemRecyclerAdapter extends RecyclerView.Adapter<PurchaseIt
 
     @Override
     public void onBindViewHolder(PurchaseItemHolder holder, @SuppressLint("RecyclerView") int position ) {
+
         PurchaseItem purchaseItem = purchaseItemsList.get(position);
 
         Log.d(DEBUG_TAG, "Bind: " + position);
+        if (purchaseItem != null) {
+            String key = purchaseItem.getItemKey();
+            String itemName = purchaseItem.getPurchaseItemName();
 
-        String key = purchaseItem.getItemKey();
-        String itemName = purchaseItem.getPurchaseItemName();
+            holder.position = position;
+            holder.itemName.setText(itemName);
 
-        holder.position = position;
-        holder.itemName.setText( itemName );
+            holder.deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    DatabaseReference fire = FirebaseDatabase.getInstance()
+                            .getReference("purchaseItems")
+                            .child(key + "/itemList/");
+                    if (position < getItemCount()) {
+                        fire.child(String.valueOf(position)).removeValue();
+                        purchaseItemsList.remove(position);
+                        notifyItemRemoved(position);
+                    } else {
+                        fire.child("0").removeValue();
+                        purchaseItemsList.remove(0);
+                        notifyItemRemoved(0);
+                    }
 
-        holder.deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (position < getItemCount()) {
-                    purchaseItemsList.remove(position);
-                    notifyItemRemoved(position);
-                } else {
-                    purchaseItemsList.remove(0);
-                    notifyItemRemoved(0);
+
                 }
-            }
-        });
+            });
+        }
     }
 
     @Override
     public int getItemCount() {
-        return purchaseItemsList.size();
+        return purchaseItemsList != null? purchaseItemsList.size(): 0;
     }
 }

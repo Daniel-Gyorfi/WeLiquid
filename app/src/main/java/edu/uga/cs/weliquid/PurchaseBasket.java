@@ -42,7 +42,15 @@ public class PurchaseBasket {
         this.key = key;
     }
 
-    public List<PurchaseItem> getItemList() { return itemList; }
+    public List<PurchaseItem> getItemList() {
+        if (itemList == null) {
+            return null;
+        }
+        for (PurchaseItem item : itemList) {
+            if (item != null) item.setItemKey(key);
+        }
+        return itemList;
+    }
 
     public void setItemList(List<PurchaseItem> items) { this.itemList = items; }
 
