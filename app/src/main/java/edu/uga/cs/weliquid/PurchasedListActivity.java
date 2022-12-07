@@ -73,6 +73,7 @@ public class PurchasedListActivity extends AppCompatActivity implements Serializ
         // get a Firebase DB instance reference
         database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("purchaseItems");
+        DatabaseReference userRef = database.getReference("userList");
 
         // Set up a listener (event handler) to receive a value for the database reference.
         // This type of listener is called by Firebase once by immediately executing its onDataChange method
@@ -107,24 +108,7 @@ public class PurchasedListActivity extends AppCompatActivity implements Serializ
         costButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DatabaseReference userRef = database.getReference("userList");
-                userRef.addValueEventListener( new ValueEventListener() {
-                    @Override
-                    public void onDataChange( @NonNull DataSnapshot snapshot ) {
-                        roommatesList.clear();
-                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                            UserEntry roommate = dataSnapshot.getValue(UserEntry.class);
-                            roommatesList.add(roommate);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled( @NonNull DatabaseError error ) {
-                        System.out.println( "ValueEventListener: reading failed: " + error.getMessage() );
-                    }
-                });
                 Intent intent = new Intent(view.getContext(), SettleCostActivity.class);
-                intent.putExtra("roommatesList", (Serializable) roommatesList);
                 view.getContext().startActivity( intent );
             }
         });
