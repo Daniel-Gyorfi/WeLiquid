@@ -56,6 +56,7 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
         }
     }
 
+    //creating the ShoppingItem layout
     @NonNull
     @Override
     public ShoppingItemHolder onCreateViewHolder( ViewGroup parent, int viewType ) {
@@ -64,6 +65,7 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
     }
 
     // This method fills in the values of the Views to show a ShoppingItem
+    // It will run when the recycler is notified of a change to its contents
     @Override
     public void onBindViewHolder(ShoppingItemHolder holder, @SuppressLint("RecyclerView") int position ) {
         ShoppingItem shoppingItem = shoppingList.get( position );
@@ -79,6 +81,7 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
         holder.itemName.setText( shoppingItem.getItemName() );
         holder.rmName.setText( shoppingItem.getRmName() );
         holder.itemTime.setText( shoppingItem.getItemTime() );
+
 
         if (!selectAll) {
             if (selectedList.contains(key)) {
@@ -160,6 +163,7 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
         numChecks = 0;
         ShoppingListActivity.setAddButton();
         ShoppingListActivity.setSelectTitle();
+        selectedList.clear();
         notifyDataSetChanged();
     }
 
