@@ -27,6 +27,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.uga.cs.weliquid.dialog.AddShoppingItemDialogFragment;
+import edu.uga.cs.weliquid.dialog.EditShoppingItemDialogFragment;
+import edu.uga.cs.weliquid.dialog.LogoutDialogFragment;
+
 /**
  * This is an activity class for displaying all items in the shopping list.
  * The current items are listed as a RecyclerView.

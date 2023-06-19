@@ -1,4 +1,4 @@
-package edu.uga.cs.weliquid;
+package edu.uga.cs.weliquid.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -11,6 +11,9 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
+
+import edu.uga.cs.weliquid.R;
+import edu.uga.cs.weliquid.ShoppingItem;
 
 
 // This is a DialogFragment to handle edits to a ShoppingItem.

@@ -1,4 +1,4 @@
-package edu.uga.cs.weliquid;
+package edu.uga.cs.weliquid.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -19,6 +19,9 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import edu.uga.cs.weliquid.R;
+import edu.uga.cs.weliquid.ShoppingItem;
 
 /**
  * A DialogFragment class to handle item additions from the shopping list activity.

@@ -1,4 +1,4 @@
-package edu.uga.cs.weliquid;
+package edu.uga.cs.weliquid.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -7,15 +7,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.FirebaseDatabase;
+
+import edu.uga.cs.weliquid.MainActivity;
+import edu.uga.cs.weliquid.R;
 
 public class LogoutDialogFragment extends DialogFragment {
 

@@ -39,6 +39,9 @@ import java.util.Calendar;
 import java.util.List;
 
 import edu.uga.cs.weliquid.R.id;
+import edu.uga.cs.weliquid.dialog.EnterPriceDialogFragment;
+import edu.uga.cs.weliquid.dialog.HelpDialogFragment;
+import edu.uga.cs.weliquid.dialog.LogoutDialogFragment;
 
 /**
  * The Basket Screen is shown here,

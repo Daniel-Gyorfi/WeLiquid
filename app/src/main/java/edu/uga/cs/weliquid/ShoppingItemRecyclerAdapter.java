@@ -2,7 +2,6 @@ package edu.uga.cs.weliquid;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import edu.uga.cs.weliquid.dialog.EditShoppingItemDialogFragment;
 
 /**
  * This is an adapter class for the RecyclerView to show all shopping list items.
