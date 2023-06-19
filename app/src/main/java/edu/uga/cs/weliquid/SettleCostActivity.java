@@ -12,16 +12,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.ui.auth.data.model.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.sql.Array;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -98,7 +94,7 @@ public class SettleCostActivity extends AppCompatActivity {
 
                 Toast.makeText(getApplicationContext(), "Deleted items from purchased list",
                         Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(view.getContext(), ItemManagementActivity.class);
+                Intent intent = new Intent(view.getContext(), MainActivity.class);
                 view.getContext().startActivity( intent );
             }
         });

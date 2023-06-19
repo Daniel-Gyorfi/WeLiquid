@@ -1,128 +1,144 @@
 package edu.uga.cs.weliquid;
 
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
-import com.firebase.ui.auth.IdpResponse;
-import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
-import java.util.Arrays;
-import java.util.List;
+import edu.uga.cs.weliquid.dialog.LogoutDialogFragment;
 
+/**
+ * This is the screen users are taken to when they log in
+ * Users can open the shopping list and purchased list screens from here
+ */
 public class MainActivity extends AppCompatActivity {
 
-    private static final String DEBUG_TAG = "MainActivity";
+    private static final String DEBUG_TAG = "ManagementActivity";
+
+    private TextView signedInTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_item_management);
 
-        //permanent login
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            // User is signed in
-            Intent i = new Intent(MainActivity.this, ItemManagementActivity.class);
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(i);
-        } else {
-            // User is signed out
-            Log.d(DEBUG_TAG, "onAuthStateChanged:signed_out");
-        }
+        final ActionBar ab = getSupportActionBar();
+        assert ab != null;
 
-        Log.d( DEBUG_TAG, "WeLiquid: MainActivity.onCreate()" );
+        Log.d( DEBUG_TAG, "ItemManagementActivity.onCreate()" );
 
-        Button signInButton = findViewById( R.id.button1 );
-        Button registerButton = findViewById( R.id.button2 );
+        ImageView logo = findViewById(R.id.loggedLogo);
+        Button shoppingListBtn = findViewById(R.id.button1);
+        Button purchasedListBtn = findViewById(R.id.button2);
+        Button basketBtn = findViewById(R.id.basket_btn);
+        signedInTextView = findViewById(R.id.textView3);
 
-        signInButton.setOnClickListener( new SignInButtonClickListener() );
-        registerButton.setOnClickListener( new RegisterButtonClickListener() );
-    }
+        shoppingListBtn.setOnClickListener( new ShoppingListBtnClickListener() );
+        purchasedListBtn.setOnClickListener( new PurchasedListBtnClickListener() );
+        basketBtn.setOnClickListener( new BasketBtnClickListener() );
 
-    // A button listener class to start a Firebase sign-in process
-    private class SignInButtonClickListener implements View.OnClickListener {
-        @Override
-        public void onClick( View v ) {
-            // TODO make sure to error check email input
-            // This is an example of how to use the AuthUI activity for signing in to Firebase.
-            // Here, we are just using email/password sign in.
-            List<AuthUI.IdpConfig> providers = Arrays.asList(
-                    new AuthUI.IdpConfig.EmailBuilder().build()
-            );
-
-            Log.d( DEBUG_TAG, "MainActivity.SignInButtonClickListener: Signing in started" );
-
-            // Create an Intent to sign in to Firebase.
-            Intent signInIntent = AuthUI.getInstance()
-                    .createSignInIntentBuilder()
-                    .setAvailableProviders(providers)
-                    // this sets our own theme (color scheme, sizing, etc.) for the AuthUI's appearance
-                    .setTheme(R.style.LoginTheme)
-                    .build();
-            signInLauncher.launch(signInIntent);
-        }
-    }
-
-    // The ActivityResultLauncher class provides a new way to invoke an activity
-    // for some result.  It is a replacement for the deprecated method startActivityForResult.
-    //
-    // The signInLauncher variable is a launcher to start the AuthUI's logging in process that
-    // should return to the MainActivity when completed.  The overridden onActivityResult
-    // is then called when the Firebase logging-in process is finished.
-    private ActivityResultLauncher<Intent> signInLauncher =
-            registerForActivityResult(
-                    new FirebaseAuthUIActivityResultContract(),
-                    new ActivityResultCallback<FirebaseAuthUIAuthenticationResult>() {
-                        @Override
-                        public void onActivityResult(FirebaseAuthUIAuthenticationResult result) {
-                            onSignInResult(result);
-                        }
-                    }
-            );
-
-    // This method is called once the Firebase sign-in activity (launched above) returns (completes).
-    // Then, the current (logged-in) Firebase user can be obtained.
-    // Subsequently, there is a transition to the ItemManagementActivity.
-    private void onSignInResult( FirebaseAuthUIAuthenticationResult result ) {
-        IdpResponse response = result.getIdpResponse();
-        if (result.getResultCode() == RESULT_OK) {
-            // Successfully signed in
-            if( response != null ) {
-                Log.d( DEBUG_TAG, "MainActivity.onSignInResult: response.getEmail(): " + response.getEmail() );
+        // Setup a listener for a change in the sign in status (authentication status change)
+        // when it is invoked, check if a user is signed in and update the UI text view string,
+        // as needed.
+        FirebaseAuth.getInstance().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+                if( currentUser != null ) {
+                    // User is signed in
+                    Log.d(DEBUG_TAG, "onAuthStateChanged:signed_in:" + currentUser.getUid());
+                    String userEmail = currentUser.getEmail();
+                    signedInTextView.setText( "Signed in as: " + userEmail );
+                } else {
+                    // User is signed out
+                    Log.d( DEBUG_TAG, "onAuthStateChanged:signed_out" );
+                    signedInTextView.setText( "Signed in as: not signed in" );
+                }
             }
+        });
 
-            //Log.d( DEBUG_TAG, "MainActivity.onSignInResult: Signed in as: " + user.getEmail() );
+        final DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
+        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
 
-            // after a successful sign in, start the items management activity
-            Intent intent = new Intent( this, ItemManagementActivity.class );
-            startActivity( intent );
-        }
-        else {
-            Log.d( DEBUG_TAG, "MainActivity.onSignInResult: Failed to sign in" );
-            // Sign in failed. If response is null the user canceled the
-            Toast.makeText( getApplicationContext(),
-                    "Sign in failed",
-                    Toast.LENGTH_SHORT).show();
-        }
+        // begin to track money spent by user, initializing entry if needed
+        Query emailLogged = dbRef.child("userList")
+                .orderByChild("name").equalTo(email);
+        emailLogged.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(!dataSnapshot.exists()){
+                    String userId = dbRef.child("userList").push().getKey();
+                    UserEntry thisUser = new UserEntry(email, "0");
+                    dbRef.child("userList").child(userId).setValue(thisUser);
+                    Log.d(DEBUG_TAG, "added user entry");
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(DEBUG_TAG, "couldn't check for user spending");
+            }
+        });
+
+
     }
 
-    private class RegisterButtonClickListener implements View.OnClickListener {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.item_management_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.logout) {
+            DialogFragment logoutFrag = new LogoutDialogFragment();
+            logoutFrag.show( getSupportFragmentManager(), null);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private class ShoppingListBtnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            // start the user registration activity
-            Intent intent = new Intent(view.getContext(), RegisterActivity.class);
+            Intent intent = new Intent(view.getContext(), ShoppingListActivity.class);
+            view.getContext().startActivity( intent );
+        }
+    }
+
+    private class PurchasedListBtnClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(view.getContext(), PurchasedListActivity.class);
+            view.getContext().startActivity(intent);
+        }
+    }
+
+    private class BasketBtnClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(view.getContext(), BasketActivity.class);
             view.getContext().startActivity(intent);
         }
     }

@@ -24,7 +24,7 @@
         <activity
             android:name=".BasketActivity"
             android:exported="false"
-            android:parentActivityName=".ItemManagementActivity">
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -32,28 +32,13 @@
         <activity
             android:name=".PurchasedListActivity"
             android:exported="false"
-            android:parentActivityName=".ItemManagementActivity">
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".ShoppingListActivity"
-            android:exported="false"
-            android:parentActivityName=".ItemManagementActivity">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".ItemManagementActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".RegisterActivity"
             android:exported="false"
             android:parentActivityName=".MainActivity">
             <meta-data
@@ -62,6 +47,21 @@
         </activity>
         <activity
             android:name=".MainActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false"
+            android:parentActivityName=".LoginActivity">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -14,7 +14,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-import edu.uga.cs.weliquid.MainActivity;
+import edu.uga.cs.weliquid.LoginActivity;
 import edu.uga.cs.weliquid.R;
 
 public class LogoutDialogFragment extends DialogFragment {
@@ -60,7 +60,7 @@ public class LogoutDialogFragment extends DialogFragment {
         public void onClick(DialogInterface dialog, int whichButton) {
             FirebaseAuth.getInstance().signOut();
 
-            Intent intent = new Intent(getContext(), MainActivity.class);
+            Intent intent = new Intent(getContext(), LoginActivity.class);
             getContext().startActivity(intent);
         }
     }

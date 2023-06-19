@@ -12,14 +12,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.database.FirebaseDatabase;
 
 
 public class RegisterActivity extends AppCompatActivity {
@@ -67,7 +62,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 //UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName("").build();
                                 //user.updateProfile(profileUpdates)
 
-                                Intent intent = new Intent( RegisterActivity.this, ItemManagementActivity.class );
+                                Intent intent = new Intent( RegisterActivity.this, MainActivity.class );
                                 startActivity( intent );
 
                             } else {
