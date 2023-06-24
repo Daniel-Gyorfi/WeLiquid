@@ -312,14 +312,16 @@ public class ShoppingListActivity
     // It is a static method so that it is accessible to other classes.
     public static void setAddButton() {
         floatingButton.setImageResource(R.drawable.ic_baseline_add_24);
-        isAddButton = true;
+        // plus sign is the base button
+        recyclerAdapter.isBaseButton = true;
     }
 
     // changes the icon and function of the circle button to moving the items in the basket.
     // It is a static method so that it is accessible to other classes.
     public static void setBasketButton() {
         floatingButton.setImageResource(R.drawable.ic_baseline_shopping_basket_24);
-        isAddButton = false;
+        // basket icon is the special button
+        recyclerAdapter.isBaseButton = false;
     }
 
     public static void setUnselectTitle() {
