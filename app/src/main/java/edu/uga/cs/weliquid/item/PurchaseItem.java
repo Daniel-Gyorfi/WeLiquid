@@ -1,4 +1,4 @@
-package edu.uga.cs.weliquid;
+package edu.uga.cs.weliquid.item;
 
 /**
  * A single item in a basket in the recently purchased list

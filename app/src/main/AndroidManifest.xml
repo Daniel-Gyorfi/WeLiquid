@@ -30,7 +30,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".PurchasedListActivity"
+            android:name=".purchased.PurchasedListActivity"
             android:exported="false"
             android:parentActivityName=".MainActivity">
             <meta-data

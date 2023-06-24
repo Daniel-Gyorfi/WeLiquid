@@ -25,6 +25,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import edu.uga.cs.weliquid.dialog.LogoutDialogFragment;
+import edu.uga.cs.weliquid.purchased.PurchasedListActivity;
 
 /**
  * This is the screen users are taken to when they log in

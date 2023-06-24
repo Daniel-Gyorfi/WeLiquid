@@ -1,6 +1,8 @@
-package edu.uga.cs.weliquid;
+package edu.uga.cs.weliquid.purchased;
 
 import java.util.List;
+
+import edu.uga.cs.weliquid.item.PurchaseItem;
 
 /**
  * A single basket item in the recently purchased list,

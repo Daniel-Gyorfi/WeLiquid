@@ -1,7 +1,5 @@
 package edu.uga.cs.weliquid;
 
-import static com.firebase.ui.auth.AuthUI.getApplicationContext;
-
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
@@ -17,6 +15,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import edu.uga.cs.weliquid.item.PurchaseItem;
+import edu.uga.cs.weliquid.item.ShoppingItem;
 
 public class ShopBasket {
     private static final String DEBUG_TAG = "ShopBasket";

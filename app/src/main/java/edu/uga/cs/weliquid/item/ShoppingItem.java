@@ -1,4 +1,4 @@
-package edu.uga.cs.weliquid;
+package edu.uga.cs.weliquid.item;
 
 import android.util.Log;
 

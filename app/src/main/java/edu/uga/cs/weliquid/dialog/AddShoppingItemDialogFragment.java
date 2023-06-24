@@ -4,10 +4,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -21,7 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import edu.uga.cs.weliquid.R;
-import edu.uga.cs.weliquid.ShoppingItem;
+import edu.uga.cs.weliquid.item.ShoppingItem;
 
 /**
  * A DialogFragment class to handle item additions from the shopping list activity.

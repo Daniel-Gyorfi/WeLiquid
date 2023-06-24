@@ -1,4 +1,4 @@
-package edu.uga.cs.weliquid;
+package edu.uga.cs.weliquid.purchased;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +21,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+
+import edu.uga.cs.weliquid.R;
+import edu.uga.cs.weliquid.item.PurchaseItem;
+import edu.uga.cs.weliquid.item.ShoppingItem;
 
 public class PurchaseItemRecyclerAdapter extends RecyclerView.Adapter<PurchaseItemRecyclerAdapter.PurchaseItemHolder> {
     public static final String DEBUG_TAG = "PurchaseItemRA";

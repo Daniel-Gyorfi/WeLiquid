@@ -1,4 +1,4 @@
-package edu.uga.cs.weliquid;
+package edu.uga.cs.weliquid.purchased;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -32,7 +32,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.uga.cs.weliquid.R;
+import edu.uga.cs.weliquid.SettleCostActivity;
+import edu.uga.cs.weliquid.UserEntry;
 import edu.uga.cs.weliquid.dialog.LogoutDialogFragment;
+import edu.uga.cs.weliquid.item.PurchaseItem;
 
 public class PurchasedListActivity extends AppCompatActivity implements Serializable {
 

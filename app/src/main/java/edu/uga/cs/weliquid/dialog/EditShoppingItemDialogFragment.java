@@ -13,7 +13,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
 import edu.uga.cs.weliquid.R;
-import edu.uga.cs.weliquid.ShoppingItem;
+import edu.uga.cs.weliquid.item.ShoppingItem;
 
 
 // This is a DialogFragment to handle edits to a ShoppingItem.

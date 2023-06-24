@@ -30,6 +30,7 @@ import java.util.List;
 import edu.uga.cs.weliquid.dialog.AddShoppingItemDialogFragment;
 import edu.uga.cs.weliquid.dialog.EditShoppingItemDialogFragment;
 import edu.uga.cs.weliquid.dialog.LogoutDialogFragment;
+import edu.uga.cs.weliquid.item.ShoppingItem;
 
 /**
  * This is an activity class for displaying all items in the shopping list.

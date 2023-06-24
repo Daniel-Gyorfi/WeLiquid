@@ -42,6 +42,10 @@ import edu.uga.cs.weliquid.R.id;
 import edu.uga.cs.weliquid.dialog.EnterPriceDialogFragment;
 import edu.uga.cs.weliquid.dialog.HelpDialogFragment;
 import edu.uga.cs.weliquid.dialog.LogoutDialogFragment;
+import edu.uga.cs.weliquid.item.PurchaseItem;
+import edu.uga.cs.weliquid.item.ShoppingItem;
+import edu.uga.cs.weliquid.purchased.PurchaseBasket;
+import edu.uga.cs.weliquid.purchased.PurchasedListActivity;
 
 /**
  * The Basket Screen is shown here,
