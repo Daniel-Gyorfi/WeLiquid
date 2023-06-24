@@ -73,13 +73,19 @@ public class ShoppingListActivity
         recyclerView.setLayoutManager(layoutManager);
 
         // the recycler adapter with shopping list items is empty at first; it will be updated later
-        recyclerAdapter = new ShoppingItemRecyclerAdapter( shoppingItemsList, ShoppingListActivity.this );
+        recyclerAdapter = new ShoppingItemRecyclerAdapter(
+                shoppingItemsList,
+                ShoppingListActivity.this,
+                R.drawable.ic_baseline_add_24,
+                R.drawable.ic_baseline_shopping_basket_24,
+                floatingButton
+        );
         recyclerView.setAdapter( recyclerAdapter );
 
         floatingButton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isAddButton) {
+                if (recyclerAdapter.isBaseButton) {
                     DialogFragment newFragment = new AddShoppingItemDialogFragment();
                     newFragment.show( getSupportFragmentManager(), null);
                 } else {

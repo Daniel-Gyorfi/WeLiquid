@@ -1,6 +1,7 @@
 package edu.uga.cs.weliquid;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,18 +27,27 @@ import edu.uga.cs.weliquid.dialog.EditShoppingItemDialogFragment;
 public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingItemRecyclerAdapter.ShoppingItemHolder> {
     public static final String DEBUG_TAG = "ShopItemRecyclerAdapter";
 
-    private List<ShoppingItem> shoppingList;
+//    private Activity owner;
+    private int baseImg;
+    private int specialImg;
+    private FloatingActionButton button;
+    private List<ShoppingItem> items;
     private ArrayList<String> selectedList;
-
     private Context context;
+    public boolean isBaseButton = true;
     int numChecks = 0;
     boolean selectAll = false;
 //    boolean addBasket = false;
 
-    public ShoppingItemRecyclerAdapter( List<ShoppingItem> shoppingList, Context context ) {
-        this.shoppingList = shoppingList;
+    public ShoppingItemRecyclerAdapter( List<ShoppingItem> shoppingList, Context context,
+                                        int basePic, int specialPic, FloatingActionButton fab
+                                        ) {
+        this.items = shoppingList;
         this.selectedList = new ArrayList<String>();
         this.context = context;
+        baseImg = basePic;
+        specialImg = specialPic;
+        button = fab;
     }
 
     // The adapter must have a ViewHolder class to "hold" one item to show.
@@ -69,7 +81,7 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
     // It will run when the recycler is notified of a change to its contents
     @Override
     public void onBindViewHolder(ShoppingItemHolder holder, @SuppressLint("RecyclerView") int position ) {
-        ShoppingItem shoppingItem = shoppingList.get( position );
+        ShoppingItem shoppingItem = items.get( position );
 
         Log.d( DEBUG_TAG, "Bind: " + position );
 
@@ -132,10 +144,10 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
                     Log.d(DEBUG_TAG, "num of selected checkbox: " + numChecks);
                 }
                 if (numChecks > 0) {
-                    ShoppingListActivity.setBasketButton();
+                    setSpecialButton();
                     ShoppingListActivity.setUnselectTitle();
                 } else {
-                    ShoppingListActivity.setAddButton();
+                    setBaseButton();
                     ShoppingListActivity.setSelectTitle();
                 }
             }
@@ -144,7 +156,7 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
 
     @Override
     public int getItemCount() {
-        return shoppingList.size();
+        return items.size();
     }
 
     public int getNumChecks() { return numChecks; }
@@ -153,7 +165,7 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
         if (getItemCount() > 0) {
             selectAll = true;
             numChecks = getItemCount();
-            ShoppingListActivity.setBasketButton();
+            setSpecialButton();
             ShoppingListActivity.setUnselectTitle();
             notifyDataSetChanged();
         }
@@ -162,7 +174,7 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
     public void unselectAll() {
         selectAll = false;
         numChecks = 0;
-        ShoppingListActivity.setAddButton();
+        setBaseButton();
         ShoppingListActivity.setSelectTitle();
         selectedList.clear();
         notifyDataSetChanged();
@@ -184,21 +196,30 @@ public class ShoppingItemRecyclerAdapter extends RecyclerView.Adapter<ShoppingIt
     }
 
     public void addBackItem(ShoppingItem item) {
-        shoppingList.add(item);
+        items.add(item);
+    }
+
+    private void setBaseButton () {
+        button.setImageResource(baseImg);
+        isBaseButton = true;
+    }
+
+    private void setSpecialButton () {
+        button.setImageResource(specialImg);
+        isBaseButton = false;
     }
 
     public void addToBasket() {
 //        addBasket = true;
         selectAll = false;
         numChecks = 0;
-        ArrayList<ShoppingItem> temp = new ArrayList<>(shoppingList);
+        ArrayList<ShoppingItem> temp = new ArrayList<>(items);
         for (ShoppingItem item : temp) {
             if (selectedList.contains(item.getKey())) {
                 ShopBasket.getInstance().add(item);
-                shoppingList.remove(item);
+                items.remove(item);
             }
         }
-        ShoppingListActivity.setSelectTitle();
-        ShoppingListActivity.setAddButton();
+        setBaseButton();
     }
 }
